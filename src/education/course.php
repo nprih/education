@@ -259,7 +259,6 @@ function isPalindrome(string $word): bool
 function hello(): string
 {
     return 'solution';
-
 }
 
 
