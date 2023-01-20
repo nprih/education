@@ -284,6 +284,4 @@ function countVowels(string $str): int
 //debug(countVowels('One'));
 //debug(countVowels('London is the capital of Great Britain'));
 
-
-
 //debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ),1);
