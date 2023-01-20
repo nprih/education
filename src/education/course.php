@@ -281,8 +281,8 @@ function countVowels(string $str): int
     return $count;
 }
 
-debug(countVowels('One'));
-debug(countVowels('London is the capital of Great Britain'));
+//debug(countVowels('One'));
+//debug(countVowels('London is the capital of Great Britain'));
 
 
 
