@@ -256,7 +256,7 @@ function isPalindrome(string $word): bool
  * Решение задачи 37 урока
  * @return string
  */
-function hello():string
+function hello(): string
 {
     return 'solution';
 }
