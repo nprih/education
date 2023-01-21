@@ -281,7 +281,16 @@ function countVowels(string $str): int
     return $count;
 }
 
-//debug(countVowels('One'));
-//debug(countVowels('London is the capital of Great Britain'));
+/**
+ * Решение задачи 39 урока
+ * @param int $number
+ * @return int
+ */
+function reverse(int $number): int
+{
+    $sign = ($number < 0) ? '-' : '';
+    return (int)($sign . strrev((string)abs($number)));
+}
+
 
 //debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ),1);
