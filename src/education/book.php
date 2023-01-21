@@ -2,10 +2,11 @@
 
 class ShopProduct
 {
-    public $title;
-    public $producerMainName;
-    public $producerFirstName;
-    public $price;
+    public string $title;
+    public string $producerMainName;
+    public string $producerFirstName;
+    protected float $price;
+    public int $discount = 0;
 
     public function __construct(string $title, string $firstName, string $mainName, float $price)
     {
@@ -25,11 +26,21 @@ class ShopProduct
         return "{$this->title} ({$this->producerMainName}, {$this->producerFirstName})";
     }
 
+    public function setDiscount(int $num): void
+    {
+        $this->discount = $num;
+    }
+
+    public function getPrice(): int|float
+    {
+        return ($this->price - $this->discount);
+    }
+
 }
 
 class BookProduct extends ShopProduct
 {
-    public $numPages;
+    public int $numPages;
 
     public function __construct(string $title, string $firstName, string $mainName, float $price, int $numPages)
     {
@@ -47,11 +58,16 @@ class BookProduct extends ShopProduct
         return "{$this->title} ( $this->producerMainName, $this->producerFirstName ): {$this->numPages} стр.";
     }
 
+    public function getPrice(): int|float
+    {
+        return $this->price;
+    }
+
 }
 
 class CDProduct extends ShopProduct
 {
-    public $playLength;
+    public float $playLength;
     public function __construct(string $title, string $firstName, string $mainName, float $price, float $playLength)
     {
         parent::__construct($title, $firstName, $mainName, $price);
