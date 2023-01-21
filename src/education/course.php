@@ -1,6 +1,6 @@
 <?php
 // BEGIN (write your solution here)
-namespace App\Course; /**Решение задачи 37 урока*/
+namespace App\Course; /**Решение задачи 38 урока*/
 // END
 
 /**
@@ -220,7 +220,7 @@ function getCustomDate(int $timeStamp): string
  * @param string $word
  * @return bool
  */
-function isPalindrome_1(string $word): bool
+function isPalindrome_2(string $word): bool
 {
     $lenght = mb_strlen($word);
     $wordReverse = '';
@@ -246,14 +246,25 @@ function generateError(): void
  * @param string $word
  * @return bool
  */
-function isPalindrome(string $word): bool
+function isPalindrome_1(string $word): bool
 {
     require_once 'Strings.php';
     return $word == \Strings\reverse($word);
 }
 
+require_once "Strings.php";
 /**
  * Решение задачи 37 урока
+ * @param string $word
+ * @return bool
+ */
+function isPalindrome(string $word): bool
+{
+    return $word == \Strings\reverse($word);
+}
+
+/**
+ * Решение задачи 38 урока
  * @return string
  */
 function hello(): string
@@ -261,14 +272,12 @@ function hello(): string
     return 'solution';
 }
 
-
-use function App\Symbols\isVowel;
-
 /**
- * Решение задачи 38 урока
+ * Решение задачи 39 урока
  * @param string $str
  * @return int
  */
+use function App\Symbols\isVowel;
 function countVowels(string $str): int
 {
     $len = strlen($str);
@@ -282,7 +291,7 @@ function countVowels(string $str): int
 }
 
 /**
- * Решение задачи 39 урока
+ * Решение задачи 40 урока
  * @param int $number
  * @return int
  */
@@ -292,5 +301,18 @@ function reverse(int $number): int
     return (int)($sign . strrev((string)abs($number)));
 }
 
+
+/**
+ * Решение задачи 41 урока
+ * @param int $a
+ * @param int $b
+ * @return void
+ */
+function swap(int &$a, int &$b): void
+{
+    $valA = $a;
+    $a = $b;
+    $b = $valA;
+}
 
 //debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ),1);
