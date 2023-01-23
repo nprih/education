@@ -25,4 +25,5 @@ define('ROOT',dirname(__DIR__));
 const EDUCATION = ROOT . '/education';
 const ERRORS = ROOT . '/errors';
 const LAYOUTS = ROOT . '/layouts';
+const CONFIG = ROOT . '/config';
 

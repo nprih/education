@@ -1,5 +1,4 @@
 <?php
-
 class ShopProduct
 {
     protected int $discount = 0;
@@ -100,11 +99,6 @@ class CDProduct extends ShopProduct
 
 }
 
-$bookObj = new BookProduct('Собачье сердце', 'Михаил', 'Булгаков', 5.99, 100);
-$cdObj = new CDProduct('Классическая музыка', 'Антонио', 'Вивальди', 10.99, 60.33);
-
-debug($bookObj);
-debug($cdObj);
 
 class ShopProductWriter
 {
@@ -126,5 +120,42 @@ class ShopProductWriter
         print $str;
     }
 }
+
+//$bookObj = new BookProduct('Собачье сердце', 'Михаил', 'Булгаков', 5.99, 100);
+//$cdObj = new CDProduct('Классическая музыка', 'Антонио', 'Вивальди', 10.99, 60.33);
+//
+//debug($bookObj);
+//debug($cdObj);
+
+class connectDB
+{
+    private PDO $connection;
+    private array $db;
+    public function __construct()
+    {
+        $this->db = getDb('education');
+    }
+
+    public function getInstance(): PDO
+    {
+        if ( empty($this->connection) ){
+            $this->connection =  new PDO($this->db['dsn'], $this->db['db_user'], $this->db['db_pass'], $this->db['options']);
+        }
+
+        return $this->connection;
+    }
+
+}
+
+$pdo = new connectDB();
+//$pdo2 = new connectDB();
+
+debug($pdo->getInstance());
+//debug($pdo2->getInstance());
+//var_dump($pdo->getInstance());
+
+debug('stop',1);
+
+
 
 debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 106',1);

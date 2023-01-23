@@ -13,13 +13,21 @@ function initRouter(): void
         $route = $uri[1] ?? '/';
     }
 
+    if ($_SERVER['REQUEST_URI'] === '/'){
+        $route = $_SERVER['REQUEST_URI'];
+    }
+
 //    debug($uri);
 //    debug($route,1);
 
     switch (true){
 
         case $route == '/':
-            debug('index.php');
+//            phpinfo();
+
+//            $connection = mysqli_connect('mysql', 'root', 'root');
+//            var_dump($connection);
+
             break;
 
         case $route == 'course':
@@ -32,6 +40,8 @@ function initRouter(): void
             break;
 
         case $route == 'book':
+
+            require_once CONFIG . '/config_db.php';
 
             require_once EDUCATION . "/{$route}.php";
 
