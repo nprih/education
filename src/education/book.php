@@ -129,8 +129,9 @@ class ShopProductWriter
 
 class connectDB
 {
-    private PDO $connection;
+    private static PDO|null $connection = null;
     private array $db;
+
     public function __construct()
     {
         $this->db = getDb('education');
@@ -138,21 +139,38 @@ class connectDB
 
     public function getInstance(): PDO
     {
-        if ( empty($this->connection) ){
-            $this->connection =  new PDO($this->db['dsn'], $this->db['db_user'], $this->db['db_pass'], $this->db['options']);
+        if ( is_null(self::$connection) ){
+            self::$connection =  new PDO($this->db['dsn'], $this->db['db_user'], $this->db['db_pass'], $this->db['options']);
         }
 
-        return $this->connection;
+        return self::$connection;
     }
 
 }
 
-$pdo = new connectDB();
-//$pdo2 = new connectDB();
+$conection = new connectDB();
+$pdo = $conection->getInstance();
 
-debug($pdo->getInstance());
-//debug($pdo2->getInstance());
-//var_dump($pdo->getInstance());
+//$sql = 'CREATE TABLE `products` (
+//  `id` int unsigned NOT NULL AUTO_INCREMENT,
+//  `type` text,
+//  `firstname` text,
+//  `mainname` text,
+//  `TITLE` text,
+//  `numpages` int DEFAULT NULL,
+//  `playlength` int DEFAULT NULL,
+//  `discount` int DEFAULT NULL,
+//  PRIMARY KEY (`id`)
+//) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3';
+//
+//$res = $pdo->prepare($sql);
+//$res->execute();
+
+//$res = $res->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
 
 debug('stop',1);
 
