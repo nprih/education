@@ -1,14 +1,20 @@
 <?php
-class ShopProduct
+
+
+class ShopProduct implements Chargeble
 {
+    use PriceUtilities;
+    const AVAILABLE = 0;
+    const OUT_OF_STOCK = 1;
     protected int $discount = 0;
 
     private int $id = 0;
+    private int $taxrate = 20;
 
     public function __construct(private string $title,
                                 private string $producerFirstName,
                                 private string $producerMainName,
-                                protected int | float   $price)
+                                protected float  $price)
     {
     }
 
@@ -37,7 +43,7 @@ class ShopProduct
         return $this->title;
     }
 
-    public function getPrice(): int|float
+    public function getPrice(): float
     {
         return ($this->price - $this->discount);
     }
@@ -55,7 +61,6 @@ class ShopProduct
     {
         $this->id = $id;
     }
-
 
     public static function getInstance(int $id, PDO $pdo): ShopProduct
     {
@@ -101,6 +106,15 @@ class ShopProduct
 
     }
 
+}
+
+trait PriceUtilities
+{
+    private $taxrate = 20;
+    public function calculateTax(float $price): float
+    {
+        return (($this->taxrate / 100) * $price);
+    }
 }
 
 class BookProduct extends ShopProduct
@@ -151,27 +165,58 @@ class CDProduct extends ShopProduct
 
 }
 
-
-class ShopProductWriter
+abstract class ShopProductWriter
 {
-    private array $products = [];
+    protected array $products = [];
 
     public function addProduct(ShopProduct $shopProduct): void
     {
         $this->products[] = $shopProduct;
     }
 
-    public function write(): void
+    abstract public function write(): void;
+
+}
+
+class XmlProductWriter extends ShopProductWriter
+{
+    public function write():void
     {
-        $str = '';
-        foreach ($this->products as $shopProduct) {
-            $str .= "{$shopProduct->title}";
-            $str .= $shopProduct->getProducer();
-            $str .= " ({$shopProduct->getPrice()})\n";
+        $writer = new \XMLWriter();
+        $writer->openMemory();
+        $writer->startDocument('1.0', 'UTF-8');
+        $writer->startElement('Товары');
+        foreach ($this->products as $shopProduct){
+            $writer->startElement('Товар');
+            $writer->writeAttribute('Наименование', $shopProduct->getTitle());
+            $writer->startElement('Резюме');
+            $writer->text($shopProduct->getSummaryLine());
+            $writer->endElement();
+            $writer->endElement();
+        }
+        $writer->endElement();
+        $writer->endDocument();
+        print $writer->flush();
+    }
+}
+
+class TextProductWriter extends ShopProductWriter
+{
+    public function write():void
+    {
+        $str = "ТОВАРЫ:\n";
+        foreach ($this->products as $shopProduct){
+            $str .= $shopProduct->getSummaryLine() . "\n";
         }
         print $str;
     }
 }
+
+//$xml = new XmlProductWriter();
+//$xml->write();
+//$text = new TextProductWriter();
+//$text->write();
+
 
 //$bookObj = new BookProduct('Собачье сердце', 'Михаил', 'Булгаков', 5.99, 100);
 //$cdObj = new CDProduct('Классическая музыка', 'Антонио', 'Вивальди', 10.99, 60.33);
@@ -200,12 +245,14 @@ class connectDB
 
 }
 
-$pdo = new connectDB();
-$pdo = $pdo->getConnection();
+//debug(ShopProduct::AVAILABLE);
 
-$obj = ShopProduct::getInstance(1,$pdo);
-
-debug($obj);
+//$pdo = new connectDB();
+//$pdo = $pdo->getConnection();
+//
+//$obj = ShopProduct::getInstance(1,$pdo);
+//
+//debug($obj);
 
 //$sql = 'CREATE TABLE `products` (
 //  `id` int unsigned NOT NULL AUTO_INCREMENT,
@@ -225,12 +272,13 @@ debug($obj);
 
 //$res = $res->fetchAll(PDO::FETCH_ASSOC);
 
+interface Chargeble
+{
+    public function getPrice(): float;
+}
 
 
 
 
-debug('stop',1);
 
-
-
-debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 106',1);
+debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 133',1);
