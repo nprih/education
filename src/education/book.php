@@ -3,6 +3,8 @@ class ShopProduct
 {
     protected int $discount = 0;
 
+    private int $id = 0;
+
     public function __construct(private string $title,
                                 private string $producerFirstName,
                                 private string $producerMainName,
@@ -47,6 +49,56 @@ class ShopProduct
     public function getSummaryLine(): string
     {
         return "{$this->title} ({$this->producerMainName}, {$this->producerFirstName})";
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+
+    public static function getInstance(int $id, PDO $pdo): ShopProduct
+    {
+        $stmt = $pdo->prepare('SELECT * FROM `products` where `id`=?');
+        $result = $stmt->execute([$id]);
+        $row = $stmt->fetch();
+
+        if (empty($row)){
+            return null;
+        }
+
+        if ($row['type'] == 'book'){
+            $product = new BookProduct(
+                $row['title'],
+                $row['firstname'],
+                $row['mainname'],
+                (float) $row['price'],
+                (int) $row['numpages']
+            );
+        }
+        elseif ($row['type']){
+            $product = new CDProduct(
+                $row['title'],
+                $row['firstname'],
+                $row['mainname'],
+                (float) $row['price'],
+                (int) $row['playlength']
+            );
+        }
+        else{
+            $firstname = (is_null($row['firstname'])) ? '' : $row['firstname'];
+            $product = new ShopProduct(
+                $row['title'],
+                $firstname,
+                $row['mainname'],
+                (float) $row['price']
+            );
+        }
+
+        $product->setId((int) $row['id']);
+        $product->setDiscount((int) $row['discount']);
+        return $product;
+
     }
 
 }
@@ -137,7 +189,7 @@ class connectDB
         $this->db = getDb('education');
     }
 
-    public function getInstance(): PDO
+    public function getConnection(): PDO
     {
         if ( is_null(self::$connection) ){
             self::$connection =  new PDO($this->db['dsn'], $this->db['db_user'], $this->db['db_pass'], $this->db['options']);
@@ -148,20 +200,25 @@ class connectDB
 
 }
 
-$conection = new connectDB();
-$pdo = $conection->getInstance();
+$pdo = new connectDB();
+$pdo = $pdo->getConnection();
+
+$obj = ShopProduct::getInstance(1,$pdo);
+
+debug($obj);
 
 //$sql = 'CREATE TABLE `products` (
 //  `id` int unsigned NOT NULL AUTO_INCREMENT,
 //  `type` text,
 //  `firstname` text,
 //  `mainname` text,
-//  `TITLE` text,
+//  `title` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+//  `price` float DEFAULT NULL,
 //  `numpages` int DEFAULT NULL,
 //  `playlength` int DEFAULT NULL,
 //  `discount` int DEFAULT NULL,
 //  PRIMARY KEY (`id`)
-//) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3';
+//) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3';
 //
 //$res = $pdo->prepare($sql);
 //$res->execute();
