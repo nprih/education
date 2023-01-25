@@ -1,20 +1,14 @@
 <?php
-
-
-class ShopProduct implements Chargeble
+class ShopProduct
 {
-    use PriceUtilities;
-    const AVAILABLE = 0;
-    const OUT_OF_STOCK = 1;
     protected int $discount = 0;
 
     private int $id = 0;
-    private int $taxrate = 20;
 
     public function __construct(private string $title,
                                 private string $producerFirstName,
                                 private string $producerMainName,
-                                protected float  $price)
+                                protected int | float   $price)
     {
     }
 
@@ -43,7 +37,7 @@ class ShopProduct implements Chargeble
         return $this->title;
     }
 
-    public function getPrice(): float
+    public function getPrice(): int|float
     {
         return ($this->price - $this->discount);
     }
@@ -61,6 +55,7 @@ class ShopProduct implements Chargeble
     {
         $this->id = $id;
     }
+
 
     public static function getInstance(int $id, PDO $pdo): ShopProduct
     {
@@ -106,15 +101,6 @@ class ShopProduct implements Chargeble
 
     }
 
-}
-
-trait PriceUtilities
-{
-    private $taxrate = 20;
-    public function calculateTax(float $price): float
-    {
-        return (($this->taxrate / 100) * $price);
-    }
 }
 
 class BookProduct extends ShopProduct
@@ -165,58 +151,27 @@ class CDProduct extends ShopProduct
 
 }
 
-abstract class ShopProductWriter
+
+class ShopProductWriter
 {
-    protected array $products = [];
+    private array $products = [];
 
     public function addProduct(ShopProduct $shopProduct): void
     {
         $this->products[] = $shopProduct;
     }
 
-    abstract public function write(): void;
-
-}
-
-class XmlProductWriter extends ShopProductWriter
-{
-    public function write():void
+    public function write(): void
     {
-        $writer = new \XMLWriter();
-        $writer->openMemory();
-        $writer->startDocument('1.0', 'UTF-8');
-        $writer->startElement('Товары');
-        foreach ($this->products as $shopProduct){
-            $writer->startElement('Товар');
-            $writer->writeAttribute('Наименование', $shopProduct->getTitle());
-            $writer->startElement('Резюме');
-            $writer->text($shopProduct->getSummaryLine());
-            $writer->endElement();
-            $writer->endElement();
-        }
-        $writer->endElement();
-        $writer->endDocument();
-        print $writer->flush();
-    }
-}
-
-class TextProductWriter extends ShopProductWriter
-{
-    public function write():void
-    {
-        $str = "ТОВАРЫ:\n";
-        foreach ($this->products as $shopProduct){
-            $str .= $shopProduct->getSummaryLine() . "\n";
+        $str = '';
+        foreach ($this->products as $shopProduct) {
+            $str .= "{$shopProduct->title}";
+            $str .= $shopProduct->getProducer();
+            $str .= " ({$shopProduct->getPrice()})\n";
         }
         print $str;
     }
 }
-
-//$xml = new XmlProductWriter();
-//$xml->write();
-//$text = new TextProductWriter();
-//$text->write();
-
 
 //$bookObj = new BookProduct('Собачье сердце', 'Михаил', 'Булгаков', 5.99, 100);
 //$cdObj = new CDProduct('Классическая музыка', 'Антонио', 'Вивальди', 10.99, 60.33);
@@ -245,13 +200,11 @@ class connectDB
 
 }
 
-//debug(ShopProduct::AVAILABLE);
+$pdo = new connectDB();
+$pdo = $pdo->getConnection();
 
-//$pdo = new connectDB();
-//$pdo = $pdo->getConnection();
-//
-//$obj = ShopProduct::getInstance(1,$pdo);
-//
+$obj = ShopProduct::getInstance(1,$pdo);
+
 //debug($obj);
 
 //$sql = 'CREATE TABLE `products` (
@@ -277,7 +230,45 @@ interface Chargeble
     public function getPrice(): float;
 }
 
+abstract class DomainObject
+{
+    private string $group;
+    public function __construct()
+    {
+        $this->group = static::getGroup();
+    }
+    public static function create(): DomainObject
+    {
+        return new static();
+    }
 
+    public static function getGroup()
+    {
+        return 'default';
+    }
+}
+
+class User extends DomainObject
+{
+}
+
+class Document extends DomainObject
+{
+    public static function getGroup(): string
+    {
+        return 'document';
+    }
+}
+
+class SpreadSheet extends Document
+{
+
+}
+
+
+
+debug(Document::create());
+debug(User::create());
 
 
 
