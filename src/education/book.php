@@ -265,11 +265,120 @@ class SpreadSheet extends Document
 
 }
 
+//class Checkout
+//{
+//    final public function totalize(): void
+//    {
+//
+//    }
+//}
+//
+//class IllegalCheckout extends Checkout
+//{
+//    public function totalize(): void
+//    {
+//
+//    }
+//}
+
+class Person
+{
+//    private ? string $myname;
+//    private ? int $myage;
+//    public function __get(string $property): mixed
+//    {
+//        $method = "get{$property}";
+//
+//        if (method_exists($this, $method)){
+//            return  $this->$method();
+//        }
+//    }
+//
+//    public function getName(): string
+//    {
+//        return 'Иван';
+//    }
+//
+//    public function getAge(): int
+//    {
+//        return 44;
+//    }
+//
+//    public function __isset(string $property): bool
+//    {
+//        $method = "get{$property}";
+//        return (method_exists($this, $method));
+//    }
+//
+//    public function __set(string $property, mixed $value): void
+//    {
+//        $method = "set{$property}";
+//
+//        if (method_exists($this, $method)){
+//            $this->$method($value);
+//        }
+//    }
+//
+//    public function setName(? string $name): void
+//    {
+//        $this->myname = $name;
+//
+//        if (! is_null($name)){
+//            $this->myname = strtoupper($this->myname);
+//        }
+//    }
+//
+//    public function setAge(? int $age): void
+//    {
+//        $this->myage = $age;
+//    }
+//
+//    public function __unset(string $property): void
+//    {
+//        $method = "set{$property}";
+//
+//        if (method_exists($this, $method)){
+//            $this->$method(null);
+//        }
+//    }
+
+    public function __construct(private PersonWriter $writer)
+    {
+    }
+
+    public function __call(string $method, array $args): mixed
+    {
+        if (method_exists($this->writer, $method)){
+            return $this->writer->$method($this);
+        }
+    }
+
+    public function getName(): string
+    {
+        return 'Bob';
+    }
+
+    public function getAge(): int
+    {
+        return 48;
+    }
+}
+
+class PersonWriter
+{
+    public function writeName(Person $p): void
+    {
+        print $p->getName() . "\n";
+    }
+
+    public function writeAge(Person $p): void
+    {
+        print $p->getAge() . "\n";
+    }
+}
+
+$person = new Person(new PersonWriter());
+$person->writeName();
 
 
-debug(Document::create());
-debug(User::create());
-
-
-
-debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 133',1);
+debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 159',1);
