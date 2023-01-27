@@ -425,4 +425,4 @@ $person->output(
     }
 );
 
-debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 162',1);
+debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 202',1);
