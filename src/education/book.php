@@ -283,102 +283,146 @@ class SpreadSheet extends Document
 
 class Person
 {
-//    private ? string $myname;
-//    private ? int $myage;
-//    public function __get(string $property): mixed
-//    {
-//        $method = "get{$property}";
-//
-//        if (method_exists($this, $method)){
-//            return  $this->$method();
-//        }
-//    }
-//
-//    public function getName(): string
-//    {
-//        return 'Иван';
-//    }
-//
-//    public function getAge(): int
-//    {
-//        return 44;
-//    }
-//
-//    public function __isset(string $property): bool
-//    {
-//        $method = "get{$property}";
-//        return (method_exists($this, $method));
-//    }
-//
-//    public function __set(string $property, mixed $value): void
-//    {
-//        $method = "set{$property}";
-//
-//        if (method_exists($this, $method)){
-//            $this->$method($value);
-//        }
-//    }
-//
-//    public function setName(? string $name): void
-//    {
-//        $this->myname = $name;
-//
-//        if (! is_null($name)){
-//            $this->myname = strtoupper($this->myname);
-//        }
-//    }
-//
-//    public function setAge(? int $age): void
-//    {
-//        $this->myage = $age;
-//    }
-//
-//    public function __unset(string $property): void
-//    {
-//        $method = "set{$property}";
-//
-//        if (method_exists($this, $method)){
-//            $this->$method(null);
-//        }
-//    }
-
-    public function __construct(private PersonWriter $writer)
+    public function output(PersonWriter $writer): void
     {
-    }
-
-    public function __call(string $method, array $args): mixed
-    {
-        if (method_exists($this->writer, $method)){
-            return $this->writer->$method($this);
-        }
+        $writer->write($this);
     }
 
     public function getName(): string
     {
-        return 'Bob';
+        return 'Иван';
     }
 
     public function getAge(): int
     {
-        return 48;
+        return 44;
     }
 }
 
-class PersonWriter
+interface PersonWriter
 {
-    public function writeName(Person $p): void
+    public function write(Person $person): void;
+}
+
+class Address
+{
+    private string $number;
+    private string $street;
+
+    public function __construct(string $maybenumber, string $maybestreet = null)
     {
-        print $p->getName() . "\n";
+        if (is_null($maybestreet)){
+            $this->streetaddress = $maybenumber;
+        } else {
+            $this->number = $maybenumber;
+            $this->street = $maybestreet;
+        }
     }
 
-    public function writeAge(Person $p): void
+    public function __set(string $property, mixed $value): void
     {
-        print $p->getAge() . "\n";
+        if ($property === 'streetaddress'){
+            if (preg_match('/^(\d+.*?)[\s,]+(.+)$/', $value, $matches)){
+                $this->number = $matches['1'];
+                $this->street = $matches['2'];
+            } else {
+                throw new \Exception("Ошибка анализа адреса:'{$value}'");
+            }
+        }
+    }
+
+    public function __get(string $property): mixed
+    {
+        if ($property === 'streetaddress'){
+            return $this->number . ' ' . $this->street;
+        }
+    }
+
+}
+
+class Account
+{
+    public function __construct(public float $balance)
+    {
+
     }
 }
 
-$person = new Person(new PersonWriter());
-$person->writeName();
+//$person = new Person('Иван', 44, new Account(200));
+//$person->setId(343);
+//$person2 = clone $person;
+//$person->account->balance += 10;
+//
+//debug($person);
+//debug($person2);
+
+class Product
+{
+    public function __construct(public string $name, public float $price)
+    {
+
+    }
+}
+
+class ProcessSale
+{
+    private array $callbacks;
 
 
-debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 159',1);
+    public function registerCallback(callable $callback): void
+    {
+        $this->callbacks[] = $callback;
+    }
+
+    public function sale(Product $product): void
+    {
+        print "{$product->name}: обрабатывается \n";
+
+        foreach ($this->callbacks as $callback){
+
+            call_user_func($callback, $product);
+
+        }
+    }
+}
+
+class Mailer
+{
+    public function doMail(Product $product): void
+    {
+        print "</br>Отправляется ({$product->name})</br>";
+    }
+}
+
+//$logger = fn($product) => print "</br>Запись ({$product->name})</br>";
+//
+//$processor = new ProcessSale();
+//
+////$processor->registerCallback($logger);
+//$processor->registerCallback([new Mailer(), 'doMail']);
+//
+//$processor->sale(new Product('Туфли', 6));
+//print "</br>";
+//$processor->sale(new Product('Кофе', 6));
+
+
+$person = new Person();
+$person->output(
+    new class(ERRORS) implements PersonWriter
+    {
+        private $path;
+
+        public function __construct(string $path)
+        {
+            $this->path = $path;
+        }
+
+        public function write(Person $person): void
+        {
+            file_put_contents($this->path, $person->getName() . ' ' . $person->getAge() . '</br>');
+        }
+
+    }
+);
+
+debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 162',1);
