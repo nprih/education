@@ -132,6 +132,7 @@ class BookProduct extends ShopProduct
 
 class CDProduct extends ShopProduct
 {
+    public string $coverUrl = 'coverUrl';
     public function __construct(string $title, string $firstName,
                                 string $mainName, float $price,
                                 private float $playLength)
@@ -406,23 +407,111 @@ class Mailer
 //$processor->sale(new Product('Кофе', 6));
 
 
-$person = new Person();
-$person->output(
-    new class(ERRORS) implements PersonWriter
+//$person = new Person();
+//$person->output(
+//    new class(ERRORS) implements PersonWriter
+//    {
+//        private $path;
+//
+//        public function __construct(string $path)
+//        {
+//            $this->path = $path;
+//        }
+//
+//        public function write(Person $person): void
+//        {
+//            file_put_contents($this->path, $person->getName() . ' ' . $person->getAge() . '</br>');
+//        }
+//
+//    }
+//);
+
+function getProduct()
+{
+    return new CDProduct(
+        'Классическая музыка. Лучшее',
+        'Антонио',
+        'Вивальди',
+        10.99,
+        60.33
+    );
+}
+
+$product = getProduct();
+
+class ClassInfo
+{
+    public static function getData(ReflectionClass $class): string
     {
-        private $path;
-
-        public function __construct(string $path)
-        {
-            $this->path = $path;
-        }
-
-        public function write(Person $person): void
-        {
-            file_put_contents($this->path, $person->getName() . ' ' . $person->getAge() . '</br>');
-        }
-
+        $details = '';
+        $name = $class->getName();
+        $details .= ($class->isUserDefined()) ? "$name - определен пользователем\n" : '';
+        $details .= ($class->isInternal()) ? "$name - встроенный класс\n" : '';
+        $details .= ($class->isInterface()) ? "$name - интерфейс\n" : '';
+        $details .= ($class->isAbstract()) ? "$name - абстрактный класс\n" : '';
+        $details .= ($class->isFinal()) ? "$name - завершенный класс\n" : '';
+        $details .= ($class->isInstantiable()) ? "$name может быть инстанцирован\n" : "$name не может быть инстанцирован\n";
+        $details .= ($class->isCloneable()) ? "$name может быть клонирован\n" : "$name не может быть клонирован\n";
+        return $details;
     }
-);
 
-debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 202',1);
+    public static function methodData(ReflectionMethod $method): string
+    {
+        $details = '';
+        $name = $method->getName();
+        $details .= ($method->isUserDefined()) ? "$name - определен пользователем\n" : '';
+        $details .= ($method->isInternal()) ? "$name - встроенный метод\n" : '';
+        $details .= ($method->isAbstract()) ? "$name - абстрактный метод\n" : '';
+        $details .= ($method->isPublic()) ? "$name - открытый метод\n" : '';
+        $details .= ($method->isProtected()) ? "$name - защищенный метод\n" : '';
+        $details .= ($method->isPrivate()) ? "$name - закрытый метод\n" : '';
+        $details .= ($method->isStatic()) ? "$name - статический метод\n" : '';
+        $details .= ($method->isFinal()) ? "$name - завершенный метод\n" : '';
+        $details .= ($method->isConstructor()) ? "$name - конструктор\n" : "";
+        $details .= ($method->returnsReference()) ? "$name возвращает ссылку (а не значение)\n" : "";
+        return $details;
+    }
+}
+
+$prodclass = new ReflectionClass(CDProduct::class);
+
+class ReflectionUtil
+{
+    public static function getClassSourse(ReflectionClass $class): string
+    {
+        $path = $class->getFileName();
+        $lines = @file($path);
+        $from = $class->getStartLine();
+        $to = $class->getEndLine();
+        $len = $to - $from + 1;
+        return implode(array_slice($lines, $from - 1, $len));
+    }
+
+    public static function getMethodSourse(ReflectionMethod $method): string
+    {
+        $path = $method->getFileName();
+        $lines = @file($path);
+        $from = $method->getStartLine();
+        $to = $method->getEndLine();
+        $len = $to - $from + 1;
+        return implode(array_slice($lines, $from - 1, $len));
+    }
+}
+
+$cd = new CDProduct('cd1', 'Antonio', 'Vivaldi', 4, 50);
+$classname = CDProduct::class;
+
+$methods = $prodclass->getMethods();
+
+//foreach ($methods as $method){
+//    debug(ClassInfo::methodData($method));
+//    print "\n----\n";
+//}
+
+//debug(ReflectionUtil::getClassSourse(new ReflectionClass(CDProduct::class)));
+
+$class = new ReflectionClass($classname);
+$method = $class->getMethod('getSummaryLine');
+debug(ReflectionUtil::getMethodSourse($method));
+
+debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 224',1);
