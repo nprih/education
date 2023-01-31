@@ -106,12 +106,31 @@ function getSql(): array
     /** Решения задач из урока 1.4 */
 
     $sql['1.4'] = [
-        '1' => 'SELECT `author`, `title`, `price` FROM `book` WHERE `price` <= (SELECT ROUND(AVG(`price`), 2) FROM `book`)',
+        '1' => 'SELECT `author`, `title`, `price` FROM `book` 
+                                  WHERE `price` <= (SELECT ROUND(AVG(`price`), 2) FROM `book`) ORDER BY `price` DESC',
 
-        '2' => '',
-        '3' => '',
-        '4' => '',
-        '5' => '',
+        '2' => 'SELECT `author`, `title`, `price` FROM `book` 
+                                  WHERE `price` - (SELECT MIN(`price`) FROM `book`) <= 150 ORDER BY `price` ASC',
+
+        '3' => 'SELECT `author`, `title`, `amount` 
+                FROM book 
+                WHERE amount IN (SELECT amount 
+                                    FROM book 
+                                    GROUP BY amount 
+                                    HAVING COUNT(amount)=1)',
+
+        '4' => 'SELECT `author`, `title`, `price` FROM `book` 
+                                  WHERE `price` < ANY (SELECT MIN(`price`) FROM `book` GROUP BY `author`)',
+
+        '5' => 'SELECT `title`, `author`, `amount`, 
+                        (SELECT MAX(`amount`) FROM `book`) - `amount` AS `Заказ` 
+                FROM `book` 
+                WHERE `amount` <> (SELECT MAX(`amount`) FROM `book`)',
+
+        '6' => 'SELECT `title`, `author`, `amount`, 
+                        (SELECT MAX(`price`) FROM `book`) - `price` AS `Разница_цены` 
+                FROM `book` 
+                WHERE `price` <> (SELECT MAX(`price`) FROM `book`)'
     ];
 
 
