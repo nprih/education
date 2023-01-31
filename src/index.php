@@ -4,7 +4,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-require_once 'config/config.php';
-require_once LAYOUTS . '/header.php';
+use vendor\core\Router;
 
-initRouter();
+require_once 'vendor/config/config.php';
+
+Router::dispatch();
