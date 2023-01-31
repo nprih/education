@@ -87,7 +87,7 @@ class Router
         } else {
 
             http_response_code(404);
-            require_once '404.php';
+            require_once VENDOR . '/404.php';
 
         }
     }

@@ -2,158 +2,158 @@
 namespace app\education;
 use PDO;
 use ReflectionClass;
-class ShopProduct
-{
-    protected int $discount = 0;
+//class ShopProduct
+//{
+//    protected int $discount = 0;
+//
+//    private int $id = 0;
+//
+//    public function __construct(private string $title,
+//                                private string $producerFirstName,
+//                                private string $producerMainName,
+//                                protected int | float   $price)
+//    {
+//    }
+//
+//    public function getProducerFirstName(): string
+//    {
+//        return $this->producerFirstName;
+//    }
+//
+//    public function getProducerMainName(): string
+//    {
+//        return $this->producerMainName;
+//    }
+//
+//    public function setDiscount(int|float $num): void
+//    {
+//        $this->discount = $num;
+//    }
+//
+//    public function getDiscount(): int
+//    {
+//        return $this->discount;
+//    }
+//
+//    public function getTitle(): string
+//    {
+//        return $this->title;
+//    }
+//
+//    public function getPrice(): int|float
+//    {
+//        return ($this->price - $this->discount);
+//    }
+//
+//    public function getProducer(): string
+//    {
+//        return $this->getProducerFirstName() . ' ' . $this->getProducerMainName();
+//    }
+//    public function getSummaryLine(): string
+//    {
+//        return "{$this->title} ({$this->producerMainName}, {$this->producerFirstName})";
+//    }
+//
+//    public function setId(int $id): void
+//    {
+//        $this->id = $id;
+//    }
+//
+//
+//    public static function getInstance(int $id, PDO $pdo): ShopProduct
+//    {
+//        $stmt = $pdo->prepare('SELECT * FROM `products` where `id`=?');
+//        $result = $stmt->execute([$id]);
+//        $row = $stmt->fetch();
+//
+//        if (empty($row)){
+//            return null;
+//        }
+//
+//        if ($row['type'] == 'book'){
+//            $product = new BookProduct(
+//                $row['title'],
+//                $row['firstname'],
+//                $row['mainname'],
+//                (float) $row['price'],
+//                (int) $row['numpages']
+//            );
+//        }
+//        elseif ($row['type']){
+//            $product = new CDProduct(
+//                $row['title'],
+//                $row['firstname'],
+//                $row['mainname'],
+//                (float) $row['price'],
+//                (int) $row['playlength']
+//            );
+//        }
+//        else{
+//            $firstname = (is_null($row['firstname'])) ? '' : $row['firstname'];
+//            $product = new ShopProduct(
+//                $row['title'],
+//                $firstname,
+//                $row['mainname'],
+//                (float) $row['price']
+//            );
+//        }
+//
+//        $product->setId((int) $row['id']);
+//        $product->setDiscount((int) $row['discount']);
+//        return $product;
+//
+//    }
+//
+//}
 
-    private int $id = 0;
+//class BookProduct extends ShopProduct
+//{
+//    public function __construct(string $title, string $firstName,
+//                                string $mainName, float $price,
+//                                private int $numPages)
+//    {
+//        parent::__construct($title, $firstName, $mainName, $price);
+//        $this->numPages = $numPages;
+//    }
+//
+//    public function getNumberOfPages(): int
+//    {
+//        return  $this->numPages;
+//    }
+//
+//    public function getSummaryLine(): string
+//    {
+//        return parent::getSummaryLine() . ": - {$this->numPages} стр.";
+//    }
+//
+//    public function getPrice(): int|float
+//    {
+//        return $this->price;
+//    }
+//
+//}
 
-    public function __construct(private string $title,
-                                private string $producerFirstName,
-                                private string $producerMainName,
-                                protected int | float   $price)
-    {
-    }
-
-    public function getProducerFirstName(): string
-    {
-        return $this->producerFirstName;
-    }
-
-    public function getProducerMainName(): string
-    {
-        return $this->producerMainName;
-    }
-
-    public function setDiscount(int|float $num): void
-    {
-        $this->discount = $num;
-    }
-
-    public function getDiscount(): int
-    {
-        return $this->discount;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function getPrice(): int|float
-    {
-        return ($this->price - $this->discount);
-    }
-
-    public function getProducer(): string
-    {
-        return $this->getProducerFirstName() . ' ' . $this->getProducerMainName();
-    }
-    public function getSummaryLine(): string
-    {
-        return "{$this->title} ({$this->producerMainName}, {$this->producerFirstName})";
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-
-    public static function getInstance(int $id, PDO $pdo): ShopProduct
-    {
-        $stmt = $pdo->prepare('SELECT * FROM `products` where `id`=?');
-        $result = $stmt->execute([$id]);
-        $row = $stmt->fetch();
-
-        if (empty($row)){
-            return null;
-        }
-
-        if ($row['type'] == 'book'){
-            $product = new BookProduct(
-                $row['title'],
-                $row['firstname'],
-                $row['mainname'],
-                (float) $row['price'],
-                (int) $row['numpages']
-            );
-        }
-        elseif ($row['type']){
-            $product = new CDProduct(
-                $row['title'],
-                $row['firstname'],
-                $row['mainname'],
-                (float) $row['price'],
-                (int) $row['playlength']
-            );
-        }
-        else{
-            $firstname = (is_null($row['firstname'])) ? '' : $row['firstname'];
-            $product = new ShopProduct(
-                $row['title'],
-                $firstname,
-                $row['mainname'],
-                (float) $row['price']
-            );
-        }
-
-        $product->setId((int) $row['id']);
-        $product->setDiscount((int) $row['discount']);
-        return $product;
-
-    }
-
-}
-
-class BookProduct extends ShopProduct
-{
-    public function __construct(string $title, string $firstName,
-                                string $mainName, float $price,
-                                private int $numPages)
-    {
-        parent::__construct($title, $firstName, $mainName, $price);
-        $this->numPages = $numPages;
-    }
-
-    public function getNumberOfPages(): int
-    {
-        return  $this->numPages;
-    }
-
-    public function getSummaryLine(): string
-    {
-        return parent::getSummaryLine() . ": - {$this->numPages} стр.";
-    }
-
-    public function getPrice(): int|float
-    {
-        return $this->price;
-    }
-
-}
-
-class CDProduct extends ShopProduct
-{
-    public string $coverUrl = 'coverUrl';
-    public function __construct(string $title, string $firstName,
-                                string $mainName, float $price,
-                                private float $playLength)
-    {
-        parent::__construct($title, $firstName, $mainName, $price);
-    }
-
-    public function getPlayLength(): int
-    {
-        return $this->playLength;
-    }
-
-    public function getSummaryLine(): string
-    {
-        return parent::getSummaryLine() . ": Время звучания {$this->playLength}";
-    }
-
-}
+//class CDProduct extends ShopProduct
+//{
+//    public string $coverUrl = 'coverUrl';
+//    public function __construct(string $title, string $firstName,
+//                                string $mainName, float $price,
+//                                private float $playLength)
+//    {
+//        parent::__construct($title, $firstName, $mainName, $price);
+//    }
+//
+//    public function getPlayLength(): int
+//    {
+//        return $this->playLength;
+//    }
+//
+//    public function getSummaryLine(): string
+//    {
+//        return parent::getSummaryLine() . ": Время звучания {$this->playLength}";
+//    }
+//
+//}
 
 
 class ShopProductWriter
@@ -183,31 +183,31 @@ class ShopProductWriter
 //debug($bookObj);
 //debug($cdObj);
 
-class connectDB
-{
-    private static PDO|null $connection = null;
-    private array $db;
-
-    public function __construct()
-    {
-        $this->db = getDb('education');
-    }
-
-    public function getConnection(): PDO
-    {
-        if ( is_null(self::$connection) ){
-            self::$connection =  new PDO($this->db['dsn'], $this->db['db_user'], $this->db['db_pass'], $this->db['options']);
-        }
-
-        return self::$connection;
-    }
-
-}
-
-$pdo = new connectDB();
-$pdo = $pdo->getConnection();
-
-$obj = ShopProduct::getInstance(1,$pdo);
+//class connectDB
+//{
+//    private static PDO|null $connection = null;
+//    private array $db;
+//
+//    public function __construct()
+//    {
+//        $this->db = getDb('education');
+//    }
+//
+//    public function getConnection(): PDO
+//    {
+//        if ( is_null(self::$connection) ){
+//            self::$connection =  new PDO($this->db['dsn'], $this->db['db_user'], $this->db['db_pass'], $this->db['options']);
+//        }
+//
+//        return self::$connection;
+//    }
+//
+//}
+//
+//$pdo = new connectDB();
+//$pdo = $pdo->getConnection();
+//
+//$obj = ShopProduct::getInstance(1,$pdo);
 
 //debug($obj);
 
@@ -229,10 +229,10 @@ $obj = ShopProduct::getInstance(1,$pdo);
 
 //$res = $res->fetchAll(PDO::FETCH_ASSOC);
 
-interface Chargeble
-{
-    public function getPrice(): float;
-}
+//interface Chargeble
+//{
+//    public function getPrice(): float;
+//}
 
 abstract class DomainObject
 {
