@@ -7,10 +7,13 @@ define('ROOT',dirname(__DIR__, 2));
 const APP = ROOT . '/app';
 const VENDOR = ROOT . '/vendor';
 const CORE = VENDOR . '/core';
+const CONFIG = VENDOR . '/config';
+
+const MODELS = APP . '/models';
+const VIEWS = APP . '/views';
+const CONTROLLERS = APP . '/controllers';
+const LAYOUTS = VIEWS . '/layouts';
 const EDUCATION = ROOT . '/education';
-const ERRORS = ROOT . '/errors';
-const LAYOUTS = ROOT . '/layouts';
-const CONFIG = ROOT . '/config';
 
 /**
  * Функция распечатки всего, в частности массивов/объектов в читабельном виде.
