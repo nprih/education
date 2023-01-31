@@ -1,4 +1,7 @@
 <?php
+namespace app\education;
+use PDO;
+use ReflectionClass;
 class ShopProduct
 {
     protected int $discount = 0;
@@ -281,7 +284,7 @@ class SpreadSheet extends Document
 //
 //    }
 //}
-
+#[info]
 class Person
 {
     public function output(PersonWriter $writer): void
@@ -510,8 +513,15 @@ $methods = $prodclass->getMethods();
 
 //debug(ReflectionUtil::getClassSourse(new ReflectionClass(CDProduct::class)));
 
-$class = new ReflectionClass($classname);
-$method = $class->getMethod('getSummaryLine');
-debug(ReflectionUtil::getMethodSourse($method));
+//$class = new ReflectionClass($classname);
+//$method = $class->getMethod('getSummaryLine');
+//debug(ReflectionUtil::getMethodSourse($method));
 
-debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 224',1);
+$rpers = new \ReflectionClass(Person::class);
+$attrs = $rpers->getAttributes();
+
+foreach ($attrs as $attr){
+    debug($attr->getName());
+}
+
+debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 240',1);
