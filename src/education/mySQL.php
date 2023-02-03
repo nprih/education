@@ -338,7 +338,7 @@ function getSql(): array
                                             HAVING AVG(`genre_id`) = 1 OR COUNT(`genre_id`) = 1)
                 GROUP BY `name_author` ORDER BY `name_author`',
 
-        '7' => 'SELECT `title`, `name_author`, `name_genre`, `price`, `amount` 
+        '7.1' => 'SELECT `title`, `name_author`, `name_genre`, `price`, `amount` 
                 FROM `book` INNER JOIN `author` ON `book`.`author_id` = `author`.`author_id`
                 INNER JOIN `genre` ON `book`.`genre_id` = `genre`.`genre_id`
                 WHERE `book`.`genre_id` IN(
@@ -346,6 +346,14 @@ function getSql(): array
                 WHERE `summs`.`sum_amount` = (SELECT MAX(`sum_amount`) AS `max_qty` 
                 FROM (SELECT `genre_id`, SUM(`amount`) AS `sum_amount` FROM `book` GROUP BY `genre_id`) `summs`))
                 ORDER BY `title`',
+
+        '7.2' => 'WITH `summs` AS (SELECT `genre_id`, SUM(`amount`) AS `sum_amount` FROM `book` GROUP BY `genre_id`)
+                SELECT `title`, `name_author`, `name_genre`, `price`, `amount` 
+                FROM `book` INNER JOIN `author` ON `book`. `author_id` = `author`.`author_id`
+                INNER JOIN `genre` ON `book`.`genre_id` = `genre.genre_id`
+                WHERE `book`.`genre_id` IN(SELECT `summs`.`genre_id` FROM `summs`
+                                       WHERE `summs`.`sum_amount` = (SELECT MAX(`sum_amount`) FROM `summs`) 
+                ) ORDER BY `title`',
 
         '8' => 'SELECT `title` `Название`, `author` `Автор`, `book`.`amount` + `supply`.`amount` `Количество` 
                 FROM `book` JOIN `supply` USING(`title`, `price`)',
