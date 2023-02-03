@@ -342,7 +342,8 @@ function getSql(): array
                 FROM `book` INNER JOIN `author` ON `book`.`author_id` = `author`.`author_id`
                 INNER JOIN `genre` ON `book`.`genre_id` = `genre`.`genre_id`
                 WHERE `book`.`genre_id` IN(
-                SELECT `summs`.`genre_id` FROM (SELECT `genre_id`, SUM(`amount`) AS `sum_amount` FROM `book` GROUP BY `genre_id`) `summs`
+                SELECT `summs`.`genre_id` FROM (SELECT `genre_id`, SUM(`amount`) AS `sum_amount` 
+                                                FROM `book` GROUP BY `genre_id`) `summs`
                 WHERE `summs`.`sum_amount` = (SELECT MAX(`sum_amount`) AS `max_qty` 
                 FROM (SELECT `genre_id`, SUM(`amount`) AS `sum_amount` FROM `book` GROUP BY `genre_id`) `summs`))
                 ORDER BY `title`',
