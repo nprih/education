@@ -269,11 +269,95 @@ function getSql(): array
     /** Решения задач из урока 2.1 */
 
     $sql['2.1'] = [
-        '1' => '',
-        '2' => '',
-        '3' => '',
-        '4' => '',
-        '5' => '',
+        '1' => 'CREATE TABLE `author`(
+                    `author_id` INT PRIMARY KEY AUTO_INCREMENT,
+                    `name_author` VARCHAR(50)
+                )',
+
+        '2' => 'INSERT INTO `author` (`name_author`)
+                VALUES (\'Булгаков М.А.\'), (\'Достоевский Ф.М.\'), (\'Есенин С.А.\'), (\'Пастернак Б.Л.\')',
+
+        '3' => 'CREATE TABLE `book` (
+                        `book_id` INT PRIMARY KEY AUTO_INCREMENT, 
+                        `title` VARCHAR(50), 
+                        `author_id` INT NOT NULL, 
+                        `genre_id` INT /*NOT NULL*/,
+                        `price` DECIMAL(8,2), 
+                        `amount` INT, 
+                        FOREIGN KEY (`author_id`)  REFERENCES author (`author_id`),
+                        FOREIGN KEY (`genre_id`)  REFERENCES genre (`genre_id`)
+                    )',
+
+        '4' => 'CREATE TABLE `book` (
+                    `book_id` INT PRIMARY KEY AUTO_INCREMENT, 
+                    `title` VARCHAR(50), 
+                    `author_id` INT NOT NULL, 
+                    `genre_id` INT,
+                    `price` DECIMAL(8,2), 
+                    `amount` INT, 
+                    FOREIGN KEY (`author_id`)  REFERENCES author (`author_id`) ON DELETE CASCADE,
+                    FOREIGN KEY (`genre_id`)  REFERENCES genre (`genre_id`) ON DELETE SET NULL
+                )',
+
+        '5' => 'INSERT INTO `book` (`title`, `author_id`, `genre_id`, `price`, `amount`)
+                VALUES (\'Стихотворения и поэмы\', 3, 2, 650.00, 15),
+                        (\'Черный человек\', 3, 2, 570.20, 6),
+                        (\'Лирика\', 4, 2, 518.99, 2)'
+    ];
+
+    /** Решения задач из урока 2.2 */
+
+    $sql['2.2'] = [
+        '1' => 'SELECT `book`.`title`, `genre`.`name_genre`, `book`.`price` FROM `book`
+                INNER JOIN `genre` ON `genre`.`genre_id` = `book`.`genre_id`
+                INNER JOIN `author` ON `author`.`author_id` = `book`.`author_id`
+                WHERE `book`.`amount` > 8
+                ORDER BY `book`.`price` DESC',
+
+        '2' => 'SELECT `genre`.`name_genre` FROM `genre` LEFT JOIN `book`
+                        ON `genre`.`genre_id` = `book`.`genre_id`
+                WHERE `book`.`genre_id` IS NULL',
+
+        '3' => 'SELECT `name_city`, `name_author`, 
+                        DATE_ADD(\'2020-01-01\', INTERVAL FLOOR(RAND() * 365) DAY) AS `Дата` 
+                FROM `city` CROSS JOIN `author` ORDER BY `name_city`, `Дата` DESC',
+
+        '4' => 'SELECT `name_genre`, `title`, `name_author` FROM `genre` 
+                INNER JOIN `book` ON `genre`.`genre_id` = `book.genre_id`
+                INNER JOIN `author` ON `book`.`author_id` = `author`.`author_id`
+                WHERE `name_genre` LIKE \'%роман%\' ORDER BY title',
+
+        '5' => 'SELECT `author`.`name_author`, SUM(`book`.`amount`) AS `Количество` 
+                FROM `author` LEFT JOIN `book` ON `author`.`author_id` = `book`.`author_id` 
+                GROUP BY `author`.`name_author`
+                HAVING `Количество` < 10 OR `Количество` IS NULL
+                ORDER BY `Количество`',
+
+        '6' => 'SELECT `name_author` FROM `author` INNER JOIN `book` ON `author`.`author_id` = `book`.`author_id`
+                WHERE `book`.`author_id` IN(SELECT `author_id` FROM `book` GROUP BY `author_id`
+                                            HAVING AVG(`genre_id`) = 1 OR COUNT(`genre_id`) = 1)
+                GROUP BY `name_author` ORDER BY `name_author`',
+
+        '7' => 'SELECT `title`, `name_author`, `name_genre`, `price`, `amount` 
+                FROM `book` INNER JOIN `author` ON `book`.`author_id` = `author`.`author_id`
+                INNER JOIN `genre` ON `book`.`genre_id` = `genre`.`genre_id`
+                WHERE `book`.`genre_id` IN(
+                SELECT `summs`.`genre_id` FROM (SELECT `genre_id`, SUM(`amount`) AS `sum_amount` FROM `book` GROUP BY `genre_id`) `summs`
+                WHERE `summs`.`sum_amount` = (SELECT MAX(`sum_amount`) AS `max_qty` 
+                FROM (SELECT `genre_id`, SUM(`amount`) AS `sum_amount` FROM `book` GROUP BY `genre_id`) `summs`))
+                ORDER BY `title`',
+
+        '8' => 'SELECT `title` `Название`, `author` `Автор`, `book`.`amount` + `supply`.`amount` `Количество` 
+                FROM `book` JOIN `supply` USING(`title`, `price`)',
+
+        '9' => 'SELECT `title`, `name_author`, `name_genre`, `price`, `name_city`, 
+                        DATE_ADD(\'2020-01-01\', INTERVAL FLOOR(RAND() * 365) DAY) AS `Дата`
+                FROM `book` 
+                JOIN `author` USING(author_id)
+                JOIN `genre` USING(genre_id)
+                JOIN (SELECT title FROM `book` ORDER BY `amount` DESC LIMIT 3) `max_count` USING(`title`)
+                CROSS JOIN `city`
+                ORDER BY `name_author`, `name_city`',
     ];
 
     return $sql;
