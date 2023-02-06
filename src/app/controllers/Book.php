@@ -2,25 +2,24 @@
 
 namespace app\controllers;
 
-use education\classes\NastyBoss;
-use education\classes\Employee;
+use education\classes\BloggsCommsManager;
+use education\classes\EarthForest;
+use education\classes\EarthPlains;
+use education\classes\EarthSea;
+use education\classes\TerrainFactory;
+
 
 class Book
 {
     public function indexAction():void
     {
-        $boss = new NastyBoss();
-        $boss->addEmployee(Employee::recruit('Игорь'));
-        $boss->addEmployee(Employee::recruit('Владимир'));
-        $boss->addEmployee(Employee::recruit('Мария'));
-
-        $boss->projectFails();
-        $boss->projectFails();
-        $boss->projectFails();
-
+        $factory = new TerrainFactory(new EarthSea(-1), new EarthPlains(), new EarthForest());
+        debug($factory->getSea());
+        debug($factory->getPlains());
+        debug($factory->getForest());
 
         debug('</br></br>');
         debug('Класс: ' . __CLASS__ . '</br>Метод: ' . __FUNCTION__);
-        debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 314',1);
+        debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 344',1);
     }
 }
