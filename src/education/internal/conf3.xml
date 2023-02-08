@@ -1,0 +1,14 @@
+<objects>
+    <class name="education\classes\ApptEncoder">
+        <instance inst="education\classes\BloggsApptEncoder"/>
+    </class>
+    <class name="education\classes\Sea">
+        <instance inst="education\classes\EarthSea"/>
+    </class>
+    <class name="education\classes\Plains">
+        <instance inst="education\classes\MarsPlains"/>
+    </class>
+    <class name="education\classes\Forest">
+        <instance inst="education\classes\EarthForest"/>
+    </class>
+</objects>

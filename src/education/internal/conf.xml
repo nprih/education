@@ -1,0 +1,5 @@
+<objects>
+    <class name="education\classes\ApptEncoder">
+    <instance inst="education\classes\BloggsApptEncoder" />
+    </class>
+</objects>

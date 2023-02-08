@@ -1,0 +1,13 @@
+<objects>
+    <class name="education\classes\TerrainFactory">
+        <arg num="0" inst="education\classes\EarthSea"/>
+        <arg num="1" inst="education\classes\MarsPlains"/>
+        <arg num="2" inst="education\classes\Forest"/>
+    </class>
+    <class name="education\classes\Forest">
+        <instance inst="education\classes\EarthForest"/>
+    </class>
+    <class name="education\classes\AppointmentMaker2">
+        <arg num="0" inst="education\classes\BloggsApptEncoder"/>
+    </class>
+</objects>

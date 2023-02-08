@@ -2,21 +2,23 @@
 
 namespace app\controllers;
 
-use education\classes\BloggsCommsManager;
-use education\classes\EarthForest;
-use education\classes\EarthPlains;
-use education\classes\EarthSea;
-use education\classes\TerrainFactory;
+
+use education\classes\AppointmentMaker2;
+use education\classes\ApptEncoder;
+use education\classes\MegaApptEncoder;
+use education\classes\ObjectAssembler;
 
 
 class Book
 {
     public function indexAction():void
     {
-        $factory = new TerrainFactory(new EarthSea(-1), new EarthPlains(), new EarthForest());
-        debug($factory->getSea());
-        debug($factory->getPlains());
-        debug($factory->getForest());
+        $assembler = new ObjectAssembler(EDUCATION . '/internal/conf3.xml');
+        $apptmaker = $assembler->getComponent(AppointmentMaker2::class);
+        $out = $apptmaker->makeAppointment();
+
+        debug($out);
+
 
         debug('</br></br>');
         debug('Класс: ' . __CLASS__ . '</br>Метод: ' . __FUNCTION__);

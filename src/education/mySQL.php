@@ -484,9 +484,54 @@ function getSql(): array
                 GROUP BY `name_genre`
                 HAVING `Количество` = (SELECT MAX(`summ`) FROM `summ`)',
 
-        '10' => '',
-        '11' => '',
-        '12' => '',
+        '10' => 'SELECT YEAR(`date_payment`) `Год`, MONTHNAME(`date_payment`) `Месяц`, SUM(`price` * `amount`) `Сумма` 
+                    FROM `buy_archive`
+                    GROUP BY YEAR(`date_payment`), MONTHNAME(`date_payment`)
+                    UNION ALL
+                    SELECT YEAR(`date_step_end`) `Год`, MONTHNAME(`date_step_end`) `Месяц`, 
+                                SUM(`price` * `buy_book.amount`) `Сумма`
+                    FROM `book`
+                    JOIN `buy_book` USING(`book_id`)
+                    JOIN `buy_step` USING(`buy_id`)
+                    WHERE `step_id` = 1 AND `date_step_end` IS NOT NULL
+                    GROUP BY YEAR(`date_step_end`), MONTHNAME(`date_step_end`)
+                    ORDER BY `Месяц`, `Год`',
+
+        '11' => 'SELECT `title`, SUM(`Количество`) `Количество`, SUM(`Сумма`) `Сумма` 
+                    FROM (
+                    SELECT `title`, SUM(`buy_archive`.`amount`) `Количество`, 
+                           SUM(`buy_archive`.`amount` * `buy_archive`.`price`) `Сумма` 
+                    FROM `buy_archive`
+                    JOIN `book` USING(`book_id`)
+                    GROUP BY `title`
+                    UNION ALL
+                    SELECT `title`, SUM(`buy_book`.`amount`) `Количество`, 
+                           SUM(`buy_book`.`amount` * `book`.`price`) `Сумма` 
+                    FROM `book`
+                    JOIN `buy_book` USING(`book_id`)
+                    JOIN `buy_step` USING(`buy_id`)
+                    WHERE `step_id` = 1 AND `date_step_end` IS NOT NULL
+                    GROUP BY `title`
+                    ) `summ`
+                    GROUP BY `title` ORDER BY `Сумма` DESC',
+
+        '12' => 'SELECT `title`, SUM(`Количество`) `Количество`, SUM(`Сумма`) `Сумма` 
+                    FROM (
+                    SELECT `title`, SUM(`buy_archive`.`amount`) `Количество`, 
+                           SUM(`buy_archive`.`amount` * `buy_archive`.`price`) `Сумма` 
+                    FROM `buy_archive`
+                    JOIN `book` USING(`book_id`)
+                    GROUP BY `title`
+                    UNION ALL
+                    SELECT `title`, SUM(`buy_book`.`amount`) `Количество`, 
+                           SUM(`buy_book`.`amount` * `book`.`price`) `Сумма` 
+                    FROM `book`
+                    JOIN `buy_book` USING(`book_id`)
+                    JOIN `buy_step` USING(`buy_id`)
+                    WHERE `step_id` = 1 AND `date_step_end` IS NOT NULL
+                    GROUP BY `title`
+                    ) `summ`
+                    GROUP BY `title` ORDER BY `Сумма`',
     ];
 
     return $sql;
