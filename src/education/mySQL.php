@@ -369,5 +369,125 @@ function getSql(): array
                 ORDER BY `name_author`, `name_city`',
     ];
 
+    /** Решения задач из урока 2.3 */
+
+    $sql['2.3'] = [
+        '1' => 'UPDATE `book`
+                INNER JOIN `author` USING(`author_id`)
+                INNER JOIN `supply` ON `book`.`title` = `supply`.`title` AND `author`.`name_author` = `supply`.`author`
+                SET `book`.`amount` = `book`.`amount` + `supply`.`amount`,
+                    `book`.`price` = (`book`.`price` * `book`.`amount` + `supply`.`price` * `supply`.`amount`) / (`book`.`amount` + `supply`.`amount`),
+                    `supply`.`amount` = 0
+                WHERE `book`.`price` <> `supply`.`price`',
+
+        '2' => 'INSERT INTO `author` (`author`.`name_author`)
+                SELECT `author` FROM `author` RIGHT JOIN `supply` ON `author`.`name_author` = `supply`.`author`
+                WHERE `name_author` IS NULL',
+
+        '3' => 'INSERT INTO `book` (`title`, `author_id`, `price`, `amount`) 
+                SELECT `title`, `author_id`, `price`, `amount` FROM  `author` 
+                INNER JOIN `supply` ON `author`.`name_author` = `supply`.`author`
+                WHERE `amount` <> 0;
+                
+                SELECT * FROM `book`;',
+
+        '4' => 'UPDATE `book`
+                SET `genre_id` = (SELECT `genre_id` FROM `genre` WHERE `name_genre` = \'Поэзия\')
+                WHERE `book_id` = 10;
+                
+                UPDATE `book`
+                SET `genre_id` = (SELECT `genre_id` FROM `genre` WHERE `name_genre` = \'Приключения\')
+                WHERE `book_id` = 11;',
+
+        '5' => 'DELETE FROM `author` WHERE `author_id` IN (SELECT `author_id` FROM `book` 
+                                                              GROUP BY `author_id` HAVING SUM(`amount`) < 20);',
+
+        '6' => 'DELETE FROM `genre`
+                WHERE `genre_id` IN (SELECT `genre_id` FROM `book` GROUP BY `genre_id` HAVING COUNT(`title`) < 4)',
+
+        '7' => 'DELETE FROM `author`
+                USING `book`
+                INNER JOIN `author` USING(`author_id`)
+                INNER JOIN `genre` USING(`genre_id`)
+                WHERE `name_genre` = \'Поэзия\'',
+
+        '8' => 'DELETE FROM `author`
+                USING `book`
+                INNER JOIN `author` USING(`author_id`)
+                INNER JOIN `genre` USING(`genre_id`)
+                WHERE `name_genre` = \'Роман\''
+    ];
+
+    /** Решения задач из урока 2.4 */
+
+    $sql['2.4'] = [
+        '1' => 'SELECT `buy`.`buy_id`, `book`.`title`, `book`.`price`, `buy_book`.`amount`
+                FROM 
+                    `client` 
+                    INNER JOIN `buy` ON `client`.`client_id` = `buy`.`client_id`
+                    INNER JOIN `buy_book` ON `buy_book`.`buy_id` = `buy`.`buy_id`
+                    INNER JOIN `book` ON `buy_book`.`book_id` = `book`.`book_id`
+                WHERE `name_client` =\'Баранов Павел\' ORDER BY `buy`.`buy_id`, `book`.`title`',
+
+        '2' => 'SELECT `name_author`, `title`, COUNT(`buy_book`.`amount`) `Количество` FROM `book`
+                INNER JOIN `author` USING(`author_id`)
+                LEFT JOIN `buy_book` USING(`book_id`)
+                GROUP BY `title`, `name_author`
+                ORDER BY `name_author`, `title`',
+
+        '3' => 'SELECT `name_city`, COUNT(*) AS `Количество` FROM `city`
+                INNER JOIN `client` USING(`city_id`)
+                INNER JOIN `buy` ON `client`.`client_id` = `buy`.`client_id`
+                GROUP BY `name_city` ORDER BY `Количество` DESC, `name_city`',
+
+        '4' => 'SELECT `buy_id`, `date_step_end` FROM `step`
+                INNER JOIN `buy_step` USING(`step_id`)
+                WHERE `step_id` = 1 AND `date_step_end` IS NOT NULL',
+
+        '5' => 'SELECT `buy`.`buy_id`, `name_client`, SUM(`book`.`price` * `buy_book`.`amount`) `Стоимость` FROM `book`
+                INNER JOIN `buy_book` ON `book`.`book_id` = `buy_book`.`book_id` 
+                INNER JOIN `buy` ON `buy`.`buy_id` = `buy_book`.`buy_id`
+                INNER JOIN `client` ON `client`.`client_id` = `buy`.`client_id`
+                GROUP BY `buy`.`buy_id` ORDER BY `buy`.`buy_id`',
+
+        '6' => 'SELECT `buy_id`, `name_step` FROM `step`
+                JOIN `buy_step` USING(step_id)
+                WHERE `date_step_beg` IS NOT NULL AND `date_step_end` IS NULL ORDER BY `buy_id`',
+
+        '7' => 'SELECT `buy`.`buy_id`, 
+                        DATEDIFF(`buy_step`.`date_step_end`, `buy_step`.`date_step_beg`) `Количество_дней`, 
+                        IF((DATEDIFF(`buy_step`.`date_step_end`, `buy_step`.`date_step_beg`) - `city`.`days_delivery`) > 0, 
+                            (DATEDIFF(`buy_step`.`date_step_end`, `buy_step`.`date_step_beg`) - `city`.`days_delivery`), 0) `Опоздание` 
+                FROM `city`
+                JOIN `client` ON `city`.`city_id` = `client`.`city_id`
+                JOIN `buy` ON `client`.`client_id` = `buy`.`client_id`
+                JOIN `buy_step` ON `buy`.`buy_id` = `buy_step`.`buy_id`
+                JOIN `step` ON `step`.`step_id` = `buy_step`.`step_id`
+                WHERE `buy_step`.`step_id` = 3 AND `buy_step`.`date_step_end` IS NOT NULL',
+
+        '8' => 'SELECT `client`.`name_client` FROM `author`
+                JOIN `book` ON `author`.`author_id` = `book`.`author_id`
+                JOIN `buy_book` ON `book`.`book_id` = `buy_book`.`book_id`
+                JOIN `buy` ON `buy`.`buy_id` = `buy_book`.`buy_id`
+                JOIN `client` ON `client`.`client_id` = `buy`.`client_id`
+                WHERE `name_author` LIKE \'Достоевский%\'
+                GROUP BY `name_author`, `client`.`client_id` ORDER BY `client`.`name_client`',
+
+        '9' => 'WITH `summ` AS (SELECT SUM(`buy_book`.`amount`) `summ` FROM `genre`
+                JOIN `book` USING(`genre_id`)
+                JOIN `buy_book` USING(`book_id`)
+                GROUP BY `name_genre`)
+
+                SELECT `name_genre`, SUM(`buy_book`.`amount`) AS `Количество` FROM `genre`
+                JOIN `book` USING(`genre_id`)
+                JOIN `buy_book` USING(`book_id`)
+                GROUP BY `name_genre`
+                HAVING `Количество` = (SELECT MAX(`summ`) FROM `summ`)',
+
+        '10' => '',
+        '11' => '',
+        '12' => '',
+    ];
+
     return $sql;
 }
