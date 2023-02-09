@@ -534,5 +534,27 @@ function getSql(): array
                     GROUP BY `title` ORDER BY `Сумма`',
     ];
 
+    /** Решения задач из урока 2.5 */
+
+    $sql['2.5'] = [
+        '1' => 'INSERT INTO `client` (`name_client`, `city_id`, `email`)
+                SELECT \'Попов Илья\', `city_id`, \'popov@test\'
+                FROM `city`
+                WHERE `name_city` = \'Москва\'',
+
+        '2' => 'INSERT INTO `buy` (`buy_description`, `client_id`)
+                SELECT \'Связаться со мной по вопросу доставки\', `client_id` FROM `client`
+                WHERE `name_client` = \'Попов Илья\'',
+
+        '3' => '',
+        '4' => '',
+        '5' => '',
+        '6' => '',
+        '7' => '',
+        '8' => '',
+        '9' => '',
+        '10' => ''
+    ];
+
     return $sql;
 }
