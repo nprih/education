@@ -546,14 +546,63 @@ function getSql(): array
                 SELECT \'Связаться со мной по вопросу доставки\', `client_id` FROM `client`
                 WHERE `name_client` = \'Попов Илья\'',
 
-        '3' => '',
-        '4' => '',
-        '5' => '',
-        '6' => '',
-        '7' => '',
-        '8' => '',
-        '9' => '',
-        '10' => ''
+        '3' => 'INSERT INTO `buy_book` (`buy_id`, `book_id`, `amount`)
+                SELECT 5, `book_id`, 2 FROM `book`
+                JOIN `author` USING(`author_id`)
+                WHERE (`title` = \'Лирика\' AND `name_author` = \'Пастернак Б.Л.\')
+                UNION ALL
+                SELECT 5, `book_id`, 1 FROM `book`
+                JOIN `author` USING(`author_id`)
+                WHERE (`title` = \'Белая гвардия\' AND `name_author` = \'Булгаков М.А.\')',
+
+        '4' => 'UPDATE `book`
+                JOIN `buy_book` USING(`book_id`)
+                SET `book`.`amount` = `book`.`amount` - `buy_book`.`amount`
+                WHERE `buy_id` = 5',
+
+        '5' => 'CREATE TABLE `buy_pay`(
+                SELECT `title`, `name_author`, `price`, `buy_book`.`amount` amount, 
+                        (`price` * `buy_book`.`amount`) `Стоимость`
+                FROM `author`
+                JOIN `book` USING(`author_id`)
+                JOIN `buy_book` USING(`book_id`)
+                WHERE `buy_id` = 5 ORDER BY `title`
+                )',
+
+        '6' => 'CREATE TABLE `buy_pay` (
+                SELECT `buy_id`, SUM(`buy_book`.`amount`) `Количество`, SUM(`buy_book`.`amount` * `price`) `Итого`
+                FROM `book`
+                JOIN `buy_book` USING(`book_id`)
+                WHERE `buy_id` = 5
+                GROUP BY `buy_id`
+                )',
+
+        '7' => 'INSERT INTO `buy_step` (`buy_id`, `step_id`, `date_step_beg`, `date_step_end`)
+                SELECT 5 `buy_id`, `step_id`, NULL `date_step_beg`, NULL `date_step_end` FROM `step`',
+
+        '8' => 'UPDATE `buy_step`
+                SET `date_step_beg` = \'2020-04-12\'
+                WHERE `step_id` = (SELECT `step_id` FROM `step` WHERE `name_step` = \'Оплата\') AND `buy_id` = 5',
+
+        '9' => 'UPDATE `buy_step`
+                JOIN `step` USING(`step_id`)
+                SET `date_step_end` = \'2020-04-13\'
+                WHERE `date_step_beg` IS NOT NULL AND `name_step` = \'Оплата\' AND `buy_id` = 5;
+                
+                UPDATE `buy_step`
+                SET `date_step_beg` = \'2020-04-13\'
+                WHERE `date_step_beg` IS NULL AND `step_id` = (SELECT `step_id` + 1 FROM `step` WHERE `name_step` = \'Оплата\') 
+                AND `buy_id` = 5;',
+
+        '10' => 'UPDATE `buy_step`
+                JOIN `step` USING(`step_id`)
+                SET `date_step_end` = \'2020-04-14\'
+                WHERE `date_step_beg` IS NOT NULL AND `name_step` = \'Оплата\' AND `buy_id` = 5;
+                
+                UPDATE `buy_step`
+                SET `date_step_beg` = \'2020-04-14\'
+                WHERE `date_step_beg` IS NULL AND `step_id` = (SELECT `step_id` + 1 FROM `step` WHERE `name_step` = \'Оплата\') 
+                AND `buy_id` = 5;'
     ];
 
     return $sql;
