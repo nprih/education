@@ -2,27 +2,31 @@
 
 namespace app\controllers;
 
-
-use education\classes\AppointmentMaker;
-use education\classes\AppointmentMaker2;
-use education\classes\ApptEncoder;
-use education\classes\MegaApptEncoder;
-use education\classes\ObjectAssembler;
-use education\classes\TerrainFactory;
-
+use education\classes\Archer;
+use education\classes\Army;
+use education\classes\LaserCannonUnit;
 
 class Book
 {
     public function indexAction():void
     {
-        $assembler = new ObjectAssembler(EDUCATION . '/internal/conf3.xml');
-        $apptmaker = $assembler->getComponent(AppointmentMaker::class);
-        $output = $apptmaker->makeAppointment();
-        debug($output);
+        $main_army = new Army();
 
+        $main_army->addUnit(new Archer());
+        $main_army->addUnit(new LaserCannonUnit());
+
+        $sub_army = new Army();
+
+        $sub_army->addUnit(new Archer());
+        $sub_army->addUnit(new Archer());
+        $sub_army->addUnit(new Archer());
+
+        $main_army->addUnit($sub_army);
+
+        debug('Атака с силой: ' . $main_army->bombardStrenght() . '<br>');
 
         debug('</br></br>');
         debug('Класс: ' . __CLASS__ . '</br>Метод: ' . __FUNCTION__);
-        debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 363',1);
+        debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 381',1);
     }
 }
