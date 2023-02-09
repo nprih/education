@@ -3,9 +3,9 @@
 namespace education\classes;
 use Attribute;
 #[Attribute]
-class InjectConstructor
+class Inject
 {
-    function __construct()
+    public function __construct()
     {
     }
 }

@@ -34,8 +34,7 @@ class ObjectAssembler
 
             }
             krsort($args);
-            $this->components[$name] =
-                function () use($resolvedname, $args)
+            $this->components[$name] = function () use($resolvedname, $args)
             {
                 $expandedargs = [];
                 foreach ($args as $arg){
@@ -51,16 +50,68 @@ class ObjectAssembler
 
     public function getComponent(string $class): object
     {
+
         if (isset($this->components[$class])){
 
             $inst = $this->components[$class]();
+            $rclass = new \ReflectionClass($inst::class);
+            $methods = $rclass->getMethods();
 
         } else {
 
             $rclass = new \ReflectionClass($class);
-            $inst = $rclass->newInstance();
+            $methods = $rclass->getMethods();
+            $injectconstructor = null;
+
+            foreach ($methods as $method){
+                foreach ($method->getAttributes(InjectConstructor::class) as $attribute){
+                    $injectconstructor = $attribute;
+                    break;
+                }
+            }
+
+            if (is_null($injectconstructor)){
+
+                $inst = $rclass->newInstance();
+
+            } else {
+
+                $constructorargs = [];
+
+                foreach ($injectconstructor->getArguments() as $arg){
+
+                    $constructorargs[] = $this->getComponent($arg);
+
+                }
+
+                $inst = $rclass->newInstanceArgs($constructorargs);
+            }
+
+
         }
 
+        $this->injectMethods($inst, $methods);
+
         return $inst;
+    }
+
+    public function injectMethods(object $inst, array $methods)
+    {
+        foreach ($methods as $method){
+
+            foreach ($method->getAttributes(Inject::class) as $attribute) {
+
+                $args = [];
+                foreach ($attribute->getArguments() as $argstring) {
+
+                    $args[] = $this->getComponent($argstring);
+
+                }
+
+                $method->invokeArgs($inst, $args);
+
+            }
+
+        }
     }
 }
