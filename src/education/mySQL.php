@@ -608,6 +608,117 @@ function getSql(): array
     /** Решения задач из урока 3.1 */
 
     $sql['3.1'] = [
+        '1' => 'SELECT `name_student`, `date_attempt`, `result` 
+                FROM `subject`
+                JOIN `attempt` USING(`subject_id`)
+                JOIN `student` USING(`student_id`)
+                WHERE `name_subject` = \'Основы баз данных\'
+                ORDER BY `result` DESC',
+
+        '2' => 'SELECT `name_subject`, COUNT(`attempt_id`) `Количество`, ROUND(SUM(`result`) / COUNT(`attempt_id`),2) `Среднее`
+                FROM `subject`
+                LEFT JOIN `attempt` USING(`subject_id`)
+                GROUP BY `name_subject`
+                ORDER BY `Среднее` DESC',
+
+        '3' => 'SELECT `name_student`, `result`
+                FROM `student`
+                JOIN `attempt` USING(`student_id`)
+                WHERE `result` = (SELECT MAX(`result`) FROM `attempt`)
+                ORDER BY `name_student`',
+
+        '4' => 'SELECT `name_student`, `name_subject`, DATEDIFF(MAX(`date_attempt`), MIN(`date_attempt`)) `Интервал`
+                FROM `subject`
+                JOIN `attempt` USING(`subject_id`)
+                JOIN `student` USING(`student_id`)
+                GROUP BY `name_student`, `name_subject`
+                HAVING COUNT(*) > 1
+                ORDER BY `Интервал`',
+
+        '5' => 'SELECT `name_subject`, COUNT(`student_id`) `Количество`
+                FROM (
+                SELECT `name_subject`, `student_id`
+                FROM `subject`
+                LEFT JOIN `attempt` USING(`subject_id`)
+                GROUP BY `name_subject`, `student_id`
+                ) `sums`
+                GROUP BY `name_subject`
+                ORDER BY `Количество` DESC, `name_subject`',
+
+        '6' => 'SELECT `question_id`, `name_question`
+                FROM `subject`
+                JOIN `question` USING(`subject_id`)
+                WHERE `name_subject` = \'Основы баз данных\'
+                ORDER BY RAND() LIMIT 3',
+
+        '7' => 'SELECT `name_question`, `name_answer`, IF(`is_correct` = 1, \'Верно\', \'Неверно\') `Результат`
+                FROM `answer`
+                JOIN `testing` ON `testing`.`answer_id` = `answer`.`answer_id`
+                JOIN `question` ON `question`.`question_id` = `answer`.`question_id`
+                WHERE `attempt_id` = 7',
+
+        '8' => 'SELECT `name_student`, `name_subject`, `date_attempt`, 
+                        ROUND((SUM(`is_correct`) / 3) * 100, 2) `Результат`
+                FROM `attempt`
+                JOIN `student` USING(`student_id`)
+                JOIN `testing` USING(`attempt_id`)
+                JOIN `subject` USING(`subject_id`)
+                JOIN `answer` USING(`answer_id`)
+                GROUP BY `attempt_id`
+                ORDER BY `name_student`, `date_attempt` DESC',
+
+        '9' => 'SELECT `name_subject`, CONCAT(LEFT(`name_question`, 30), \'...\') `Вопрос`, COUNT(`testing`.`answer_id`) `Всего_ответов`, ROUND((SUM(`is_correct`) / COUNT(`testing`.`answer_id`)) * 100, 2) `Успешность`
+                FROM `subject`
+                JOIN `question` ON `question`.`subject_id` = `subject`.`subject_id`
+                JOIN `testing` ON `testing`.`question_id` = `question`.`question_id`
+                JOIN `answer` ON `answer`.`answer_id` = `testing`.`answer_id`
+                GROUP BY `testing`.`question_id`
+                ORDER BY `name_subject`, `Успешность` DESC, `Вопрос`',
+
+        '10' => 'SELECT `name_subject`, CONCAT(LEFT(`name_question`, 25), \'...\') `Вопрос`, COUNT(`testing`.`answer_id`) `Всего_ответов`, ROUND((SUM(`is_correct`) / COUNT(`testing`.`answer_id`)) * 100, 2) `Успешность`
+                FROM `subject`
+                JOIN `question` ON `question`.`subject_id` = `subject`.`subject_id`
+                JOIN `testing` ON `testing`.`question_id` = `question`.`question_id`
+                JOIN `answer` ON `answer`.`answer_id` = `testing`.`answer_id`
+                GROUP BY `testing`.`question_id`
+                ORDER BY `name_subject`, `Успешность` DESC, `Вопрос`',
+    ];
+
+    /** Решения задач из урока 3.2 */
+
+    $sql['3.2'] = [
+        '1' => 'INSERT INTO `attempt` (`student_id`, `subject_id`, `date_attempt`, `result`)
+                SELECT `student_id`, 
+                (SELECT `subject_id` FROM `subject` WHERE `name_subject` = \'Основы баз данных\') `subject_id`,
+                NOW() `date_attempt`, NULL `result`
+                FROM `student`
+                WHERE name_student = \'Баранов Павел\'',
+
+        '2' => 'INSERT INTO `testing` (`attempt_id`, `question_id`, `answer_id`)
+                SELECT `attempt_id`, `question_id`, NULL `answer_id`
+                FROM `question`
+                JOIN `attempt` USING(`subject_id`)
+                WHERE `attempt_id` = (SELECT MAX(`attempt_id`) `last_attempt_id` FROM `attempt`)
+                ORDER BY RAND() LIMIT 3',
+
+        '3' => 'UPDATE `attempt`
+                SET `result` = (
+                    SELECT ROUND((SUM(`is_correct`) / 3) * 100) `result`
+                    FROM `testing`
+                    JOIN `answer` USING(`answer_id`)
+                    WHERE `attempt_id` = 8
+                    GROUP BY `attempt_id`)
+                WHERE `attempt_id` = 8',
+
+        '4' => 'DELETE FROM `attempt` WHERE `date_attempt` < \'2020-05-01\'',
+
+        '5' => 'DELETE FROM `attempt` WHERE `date_attempt` < \'2020-04-01\'',
+
+    ];
+
+    /** Решения задач из урока 3.2 */
+
+    $sql['3.2'] = [
         '1' => '',
         '2' => '',
         '3' => '',
@@ -618,6 +729,7 @@ function getSql(): array
         '8' => '',
         '9' => '',
         '10' => '',
+        '11' => '',
     ];
 
     return $sql;
