@@ -5,7 +5,6 @@ namespace app\controllers;
 use education\classes\Archer;
 use education\classes\Army;
 use education\classes\LaserCannonUnit;
-use education\classes\TextDumpArmyVisitor;
 use education\classes\Cavalry;
 use education\classes\TaxCollectionVisitor;
 
