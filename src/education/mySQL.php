@@ -667,7 +667,9 @@ function getSql(): array
                 GROUP BY `attempt_id`
                 ORDER BY `name_student`, `date_attempt` DESC',
 
-        '9' => 'SELECT `name_subject`, CONCAT(LEFT(`name_question`, 30), \'...\') `Вопрос`, COUNT(`testing`.`answer_id`) `Всего_ответов`, ROUND((SUM(`is_correct`) / COUNT(`testing`.`answer_id`)) * 100, 2) `Успешность`
+        '9' => 'SELECT `name_subject`, CONCAT(LEFT(`name_question`, 30), \'...\') `Вопрос`, 
+                        COUNT(`testing`.`answer_id`) `Всего_ответов`, 
+                        ROUND((SUM(`is_correct`) / COUNT(`testing`.`answer_id`)) * 100, 2) `Успешность`
                 FROM `subject`
                 JOIN `question` ON `question`.`subject_id` = `subject`.`subject_id`
                 JOIN `testing` ON `testing`.`question_id` = `question`.`question_id`
@@ -675,13 +677,15 @@ function getSql(): array
                 GROUP BY `testing`.`question_id`
                 ORDER BY `name_subject`, `Успешность` DESC, `Вопрос`',
 
-        '10' => 'SELECT `name_subject`, CONCAT(LEFT(`name_question`, 25), \'...\') `Вопрос`, COUNT(`testing`.`answer_id`) `Всего_ответов`, ROUND((SUM(`is_correct`) / COUNT(`testing`.`answer_id`)) * 100, 2) `Успешность`
+        '10' => 'SELECT `name_subject`, CONCAT(LEFT(`name_question`, 25), \'...\') `Вопрос`, 
+                            COUNT(`testing`.`answer_id`) `Всего_ответов`, 
+                            ROUND((SUM(`is_correct`) / COUNT(`testing`.`answer_id`)) * 100, 2) `Успешность`
                 FROM `subject`
                 JOIN `question` ON `question`.`subject_id` = `subject`.`subject_id`
                 JOIN `testing` ON `testing`.`question_id` = `question`.`question_id`
                 JOIN `answer` ON `answer`.`answer_id` = `testing`.`answer_id`
                 GROUP BY `testing`.`question_id`
-                ORDER BY `name_subject`, `Успешность` DESC, `Вопрос`',
+                ORDER BY `name_subject`, `Успешность` DESC, `Вопрос`'
     ];
 
     /** Решения задач из урока 3.2 */
@@ -712,13 +716,164 @@ function getSql(): array
 
         '4' => 'DELETE FROM `attempt` WHERE `date_attempt` < \'2020-05-01\'',
 
-        '5' => 'DELETE FROM `attempt` WHERE `date_attempt` < \'2020-04-01\'',
+        '5' => 'DELETE FROM `attempt` WHERE `date_attempt` < \'2020-04-01\''
 
     ];
 
-    /** Решения задач из урока 3.2 */
+    /** Решения задач из урока 3.3 */
 
     $sql['3.2'] = [
+        '1' => 'SELECT `name_enrollee` FROM `enrollee`
+                JOIN `program_enrollee` ON `enrollee`.`enrollee_id` = `program_enrollee`.`enrollee_id`
+                JOIN `program` ON `program_enrollee`.`program_id` = `program`.`program_id`
+                WHERE `name_program` = \'Мехатроника и робототехника\'
+                ORDER BY `name_enrollee`',
+
+        '2' => 'SELECT `name_program` FROM `program`
+                JOIN `program_subject` ON `program`.`program_id` = `program_subject`.`program_id`
+                JOIN `subject` ON `subject`.`subject_id` = `program_subject`.`subject_id`
+                WHERE `name_subject` = \'Информатика\'
+                ORDER BY `name_program` DESC',
+
+        '3' => 'SELECT `name_subject`, COUNT(*) `Количество`, MAX(`result`) `Максимум`, 
+                        MIN(`result`) `Минимум`, ROUND(AVG(`result`), 1) `Среднее` 
+                FROM `subject`
+                JOIN `enrollee_subject` USING(`subject_id`)
+                GROUP BY `subject_id` ORDER BY `name_subject`',
+
+        '4' => 'SELECT `name_program` FROM `program`
+                JOIN `program_subject` USING(`program_id`)
+                GROUP BY `name_program`
+                HAVING MIN(`min_result`) >= 40
+                ORDER BY `name_program`',
+
+        '5' => 'SELECT `name_program`, `plan` FROM `program`
+                WHERE `plan` = (SELECT MAX(`plan`) FROM `program`)',
+
+        '6' => 'SELECT `name_enrollee`, SUM(IF(`bonus` IS NOT NULL, `bonus`, 0)) `Бонус` FROM `enrollee`
+                LEFT JOIN `enrollee_achievement` ON `enrollee`.`enrollee_id` = `enrollee_achievement`.`enrollee_id`
+                LEFT JOIN `achievement` ON `enrollee_achievement`.`achievement_id` = `achievement`.`achievement_id`
+                GROUP BY `name_enrollee` ORDER BY `name_enrollee`',
+
+        '7' => 'SELECT `name_department`, `name_program`, `plan`, COUNT(*) `Количество`, 
+                        ROUND(COUNT(*)/plan, 2) `Конкурс`
+                FROM `department`
+                JOIN `program` USING(`department_id`)
+                JOIN `program_enrollee` USING(`program_id`)
+                GROUP BY `name_department`, `name_program`, `plan`
+                ORDER BY `Конкурс` DESC',
+
+        '8' => 'SELECT `name_program` FROM `program`
+                JOIN `program_subject` ON `program`.`program_id` = `program_subject`.`program_id`
+                JOIN `subject` ON `program_subject`.`subject_id` = `subject`.`subject_id`
+                WHERE `name_subject` IN(\'Информатика\', \'Математика\')
+                GROUP BY `name_program`
+                HAVING COUNT(*) = 2 ORDER BY `name_program`',
+
+        '9' => 'SELECT `name_program`, `name_enrollee`, SUM(`result`) `itog`
+                FROM `enrollee`
+                JOIN `program_enrollee` ON `enrollee`.`enrollee_id` = `program_enrollee`.`enrollee_id`
+                JOIN `program` ON `program_enrollee`.`program_id` = `program`.`program_id`
+                JOIN `program_subject` ON `program`.`program_id` = `program_subject`.`program_id`
+                JOIN `subject` ON `program_subject`.`subject_id` = `subject`.`subject_id`
+                JOIN `enrollee_subject` ON `subject`.`subject_id` = `enrollee_subject`.`subject_id` 
+                                               AND `enrollee_subject`.`enrollee_id` = `enrollee`.`enrollee_id`
+                GROUP BY `name_program`, `name_enrollee` ORDER BY `name_program`, `itog` DESC',
+
+        '10' => 'SELECT `name_program`, `name_enrollee`
+                FROM `enrollee`
+                JOIN `program_enrollee` ON `enrollee`.`enrollee_id` = `program_enrollee`.`enrollee_id`
+                JOIN `program` ON `program_enrollee`.`program_id` = `program`.`program_id`
+                JOIN `program_subject` ON `program`.`program_id` = `program_subject`.`program_id`
+                JOIN `subject` ON `program_subject`.`subject_id` = `subject`.`subject_id`
+                JOIN `enrollee_subject` ON `subject`.`subject_id` = `enrollee_subject`.`subject_id` 
+                    AND `enrollee_subject`.`enrollee_id` = `enrollee`.`enrollee_id`
+                WHERE `result` < `min_result`
+                ORDER BY `name_program`, `name_enrollee`',
+
+        '11' => 'SELECT `name_program`, `name_enrollee`
+                FROM `enrollee`
+                JOIN `program_enrollee` ON `enrollee`.`enrollee_id` = `program_enrollee`.`enrollee_id`
+                JOIN `program` ON `program_enrollee`.`program_id` = `program`.`program_id`
+                JOIN `program_subject` ON `program`.`program_id` = `program_subject`.`program_id`
+                JOIN `subject` ON `program_subject`.`subject_id` = `subject`.`subject_id`
+                JOIN `enrollee_subject` ON `subject`.`subject_id` = `enrollee_subject`.`subject_id` 
+                    AND `enrollee_subject`.`enrollee_id` = `enrollee`.`enrollee_id`
+                WHERE `result` < `min_result`
+                ORDER BY `name_program`, `name_enrollee`'
+    ];
+
+    /** Решения задач из урока 3.4 */
+
+    $sql['3.4'] = [
+        '1' => 'CREATE TABLE `applicant` 
+                SELECT `program`.`program_id`, `enrollee.enrollee_id`, SUM(`result`) `itog`
+                FROM `enrollee`
+                JOIN `program_enrollee` ON `enrollee`.`enrollee_id` = `program_enrollee`.`enrollee_id`
+                JOIN `program` ON `program_enrollee`.`program_id` = `program`.`program_id`
+                JOIN `program_subject` ON `program`.`program_id` = `program_subject`.`program_id`
+                JOIN `subject` ON `program_subject`.subject_id`` = `subject`.`subject_id`
+                JOIN `enrollee_subject` ON `subject`.`subject_id` = `enrollee_subject`.`subject_id` 
+                    AND `enrollee_subject`.`enrollee_id` = `enrollee`.`enrollee_id`
+                GROUP BY `program`.`program_id`, `enrollee`.`enrollee_id` ORDER BY `program`.`program_id`, `itog` DESC',
+
+        '2' => 'DELETE FROM `applicant`
+                WHERE (`applicant`.`program_id`, `applicant`.`enrollee_id`) IN (
+                SELECT `program`.`program_id`, `enrollee`.`enrollee_id`
+                FROM `enrollee`
+                JOIN `program_enrollee` ON `enrollee`.`enrollee_id` = `program_enrollee`.`enrollee_id`
+                JOIN `program` ON `program_enrollee`.`program_id` = `program`.`program_id`
+                JOIN `program_subject` ON `program`.`program_id` = `program_subject`.`program_id`
+                JOIN `subject` ON `program_subject`.`subject_id` = `subject`.`subject_id`
+                JOIN `enrollee_subject` ON `subject`.`subject_id` = `enrollee_subject`.`subject_id` 
+                    AND `enrollee_subject`.`enrollee_id` = `enrollee`.`enrollee_id`
+                WHERE `result` < `min_result`
+                ORDER BY `program`.`program_id`, `enrollee`.`enrollee_id`)',
+
+        '3' => 'UPDATE `applicant`
+                JOIN 
+                (
+                SELECT `enrollee`.`enrollee_id`, SUM(IF(`bonus` IS NOT NULL, `bonus`, 0)) `Бонус` FROM `enrollee`
+                LEFT JOIN `enrollee_achievement` ON `enrollee`.`enrollee_id` = `enrollee_achievement`.`enrollee_id`
+                LEFT JOIN `achievement` ON `enrollee_achievement`.`achievement_id` = `achievement`.`achievement_id`
+                GROUP BY `enrollee`.`enrollee_id` ORDER BY `enrollee`.`enrollee_id`) `bonus` 
+                                                                ON `applicant`.`enrollee_id` = `bonus.enrollee_id`
+                SET `itog` = `itog` + `bonus`.`Бонус`',
+
+        '4' => 'CREATE TABLE `applicant_order`
+                SELECT * FROM `applicant` ORDER BY `program_id`, `itog` DESC;
+                
+                DROP TABLE `applicant`;',
+
+        '5' => 'ALTER TABLE applicant_order ADD str_id INT FIRST',
+
+        '6' => 'SET @num_pr := 0;
+                SET @row_num := 1;
+                
+                UPDATE `applicant_order`
+                SET `str_id` = 
+                IF(`program_id` = @num_pr, @row_num := @row_num + 1, @row_num := 1 AND @num_pr := @num_pr + 1);',
+
+        '7' => 'CREATE TABLE `student`
+                SELECT `name_program`, `name_enrollee`, `itog`
+                FROM `enrollee`
+                JOIN `applicant_order` USING(`enrollee_id`)
+                JOIN `program` USING(`program_id`)
+                WHERE `str_id` <= `plan`
+                ORDER BY `name_program`, `itog` DESC',
+
+        '8' => 'CREATE TABLE `student_order`
+                SELECT `name_program`, `name_enrollee`, `itog`
+                FROM `enrollee`
+                JOIN `applicant_order` USING(`enrollee_id`)
+                JOIN `program` USING(`program_id`)
+                WHERE `str_id` <= `plan`
+                ORDER BY `name_program`, `itog`'
+    ];
+
+    /** Решения задач из урока 3.5 */
+
+    $sql['3.5'] = [
         '1' => '',
         '2' => '',
         '3' => '',
@@ -730,6 +885,7 @@ function getSql(): array
         '9' => '',
         '10' => '',
         '11' => '',
+        '12' => ''
     ];
 
     return $sql;
