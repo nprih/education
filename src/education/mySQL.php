@@ -874,9 +874,36 @@ function getSql(): array
     /** Решения задач из урока 3.5 */
 
     $sql['3.5'] = [
-        '1' => '',
-        '2' => '',
-        '3' => '',
+        '1' => 'SELECT 
+                IF(LENGTH(CONCAT(`module_id`, \' \', `module_name`)) > 19, 
+                    CONCAT(LEFT(CONCAT(`module_id`, \' \', `module_name`), 16), \'...\'), 
+                    CONCAT(`module_id`, \' \', `module_name`)) `Модуль`,
+                IF( LENGTH(CONCAT(`module_id`, '.', `lesson_position`, \' \', `lesson_name`)) > 19, 
+                    CONCAT(LEFT(CONCAT(`module_id`, \'.\', `lesson_position`, \' \', `lesson_name`), 16), \'...\'), 
+                    CONCAT(`module_id`, \'.\', `lesson_position`, \' \', `lesson_name`)) `Урок`,
+                CONCAT(`module_id`, \'.\', `lesson_position`, \'.\', `step_position`, \' \', `step_name`) `Шаг`
+                FROM `module`
+                JOIN `lesson` USING(`module_id`)
+                JOIN `step` USING(`lesson_id`)
+                WHERE `step_name` LIKE \'%ложенн%\'
+                ORDER BY `module_id`, `lesson_position`, `step_position`',
+
+        '2' => 'INSERT INTO `step_keyword`
+                SELECT `step_id`, `keyword_id` FROM `keyword` CROOS JOIN `step`
+                WHERE REGEXP_INSTR(`step_name`, CONCAT(\'\\b\', `keyword_name`, \'\\b\'))
+                ORDER BY `keyword_id`',
+
+        '3' => 'SELECT CONCAT(`module_id`, \'.\', `lesson_position`, \'.\', IF(LENGTH(`step_position`) < 2, CONCAT(0, `step_position`), `step_position`), \' \', `step_name`) `Шаг`
+                FROM `keyword`
+                JOIN `step_keyword` USING(`keyword_id`)
+                JOIN `step` USING(`step_id`)
+                JOIN `lesson` USING(`lesson_id`)
+                JOIN `module` USING(`module_id`)
+                WHERE `keyword_name` = \'MAX\' OR `keyword_name` = \'AVG\'
+                GROUP BY `step_id`
+                HAVING COUNT(`step_name`) = 2
+                ORDER BY `Шаг`',
+
         '4' => '',
         '5' => '',
         '6' => '',
