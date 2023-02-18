@@ -1023,10 +1023,10 @@ function getSql(): array
                     JOIN `lesson` USING(`lesson_id`)
                     GROUP BY `lesson_id`
                 )
-            SELECT ROW_NUMBER() OVER (ORDER BY `Среднее_время`) AS `Номер`,
-                    `Урок`,
-                    `Среднее_время`        
-            FROM `pre_final`',
+                SELECT ROW_NUMBER() OVER (ORDER BY `Среднее_время`) AS `Номер`,
+                        `Урок`,
+                        `Среднее_время`        
+                FROM `pre_final`',
 
         '9' => '',
         '10' => '',
