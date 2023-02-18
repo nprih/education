@@ -893,7 +893,8 @@ function getSql(): array
                 WHERE REGEXP_INSTR(`step_name`, CONCAT(\'\\b\', `keyword_name`, \'\\b\'))
                 ORDER BY `keyword_id`',
 
-        '3' => 'SELECT CONCAT(`module_id`, \'.\', `lesson_position`, \'.\', IF(LENGTH(`step_position`) < 2, CONCAT(0, `step_position`), `step_position`), \' \', `step_name`) `Шаг`
+        '3' => 'SELECT CONCAT(`module_id`, \'.\', `lesson_position`, \'.\', 
+                IF(LENGTH(`step_position`) < 2, CONCAT(0, `step_position`), `step_position`), \' \', `step_name`) `Шаг`
                 FROM `keyword`
                 JOIN `step_keyword` USING(`keyword_id`)
                 JOIN `step` USING(`step_id`)
@@ -932,10 +933,101 @@ function getSql(): array
                     ) `query_in_1`
                 GROUP BY `Группа`, `Интервал`',
 
-        '5' => '',
-        '6' => '',
-        '7' => '',
-        '8' => '',
+        '5' => 'WITH `get_count_correct` (`st_n_c`, `count_correct`) 
+                  AS (
+                    SELECT `step_name`, count(*)
+                    FROM 
+                        `step` 
+                        INNER JOIN `step_student` USING (`step_id`)
+                    WHERE `result` = \'correct\'
+                    GROUP BY `step_name`
+                   ),
+                  get_count_wrong (`st_n_w`, `count_wrong`) 
+                  AS (
+                    SELECT `step_name`, count(*)
+                    FROM 
+                        `step` 
+                        INNER JOIN `step_student` USING (`step_id`)
+                    WHERE `result` = \'wrong\'
+                    GROUP BY `step_name`
+                   )  
+                SELECT `st_n_c` AS `Шаг`,
+                    IF(`count_wrong` IS NULL, 100, ROUND(`count_correct` / (`count_correct` + `count_wrong`) * 100))
+                     AS `Успешность`
+                FROM  
+                    `get_count_correct` 
+                    LEFT JOIN `get_count_wrong` ON `st_n_c` = `st_n_w`
+                UNION
+                SELECT `st_n_w` AS `Шаг`,
+                    IF(`count_correct` IS NULL, 0, ROUND(`count_correct` / (`count_correct` + `count_wrong`) * 100))
+                     AS `Успешность`
+                FROM  
+                    `get_count_correct `
+                    RIGHT JOIN `get_count_wrong` ON `st_n_c` = `st_n_w`
+                ORDER BY `Успешность`, `Шаг`',
+
+        '6' => 'WITH `all_step` (`all_count`) 
+                    AS (
+                        SELECT COUNT(*) AS `all_count` FROM 
+                            (SELECT `step_id` FROM `step_student` GROUP BY `step_id`) `all_count`
+                        ),
+                        `get_count_correct` (`student_name`, `count_correct`)
+                    AS (
+                        SELECT `student_name`, COUNT(DISTINCT(`step_id`)) AS `count_correct`
+                        FROM `student`
+                        JOIN `step_student` USING (`student_id`)
+                        WHERE `result` = \'correct\'
+                        GROUP BY `student_name`
+                    )
+                SELECT `student_name` `Студент`, 
+                        ROUND((count_correct / all_count) * 100) `Прогресс`,
+                        CASE 
+                            WHEN ROUND((`count_correct` / `all_count`) * 100) = 100 THEN \'Сертификат с отличием\'
+                            WHEN ROUND((`count_correct` / `all_count`) * 100) >= 80 THEN \'Сертификат\'
+                            WHEN ROUND((`count_correct` / `all_count`) * 100) < 80 THEN \'\'
+                        END `Результат`
+                        FROM `get_count_correct`, `all_step`
+                ORDER BY `Прогресс` DESC, `Студент`',
+
+        '7' => 'SELECT `student_name` `Студент`, 
+                        IF(LENGTH(`step_name` >= 20), CONCAT(LEFT(`step_name`, 20), \'...\') , `step_name`)  `Шаг`,
+                        `result` `Результат`,
+                        FROM_UNIXTIME(`submission_time`) `Дата_отправки`,
+                        SEC_TO_TIME(IFNULL(`submission_time` - LAG(`submission_time`) 
+                           OVER (ORDER BY `submission_time`), 0)) `Разница`
+                FROM `student`
+                JOIN `step_student` USING(`student_id`)
+                JOIN `step` USING(`step_id`)
+                WHERE `student_name` = \'student_61\'
+                ORDER BY `submission_time`',
+
+        '8' => 'WITH `sum_time_step` (`student_id`, `step_id`, `lesson_id`, `Время_на_шаг`)
+                AS (
+                    SELECT `student_id`, `step_id`, `lesson_id`, SUM(`submission_time` - `attempt_time`) `Время_на_шаг`
+                    FROM `step_student`
+                    JOIN `step` USING(`step_id`)
+                    WHERE `submission_time` - `attempt_time` < 4 * 3600
+                    GROUP BY step_id, student_id
+                ),
+                `sum_time_lesson` (`student_id`, `lesson_id`, `Время_на_урок`)
+                AS (
+                    SELECT `student_id`, `lesson_id`, SUM(`Время_на_шаг`) `Время_на_урок`
+                    FROM `sum_time_step` 
+                    GROUP BY `student_id`, `lesson_id`
+                ),
+                `pre_final` (`Урок`, `Среднее_время`)
+                AS (
+                    SELECT CONCAT(`module_id`, \'.\', `lesson_position`, \' \', `lesson_name`)  `Урок`, 
+                            ROUND(AVG(`Время_на_урок`/3600), 2) `Среднее_время`
+                    FROM `sum_time_lesson`
+                    JOIN `lesson` USING(`lesson_id`)
+                    GROUP BY `lesson_id`
+                )
+            SELECT ROW_NUMBER() OVER (ORDER BY `Среднее_время`) AS `Номер`,
+                    `Урок`,
+                    `Среднее_время`        
+            FROM `pre_final`',
+
         '9' => '',
         '10' => '',
         '11' => '',
