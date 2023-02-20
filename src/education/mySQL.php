@@ -1028,10 +1028,155 @@ function getSql(): array
                         `Среднее_время`        
                 FROM `pre_final`',
 
-        '9' => '',
-        '10' => '',
-        '11' => '',
-        '12' => ''
+        '9' => 'SELECT `module_id` `Модуль`, 
+                        `student_name` `Студент`, 
+                        COUNT(DISTINCT `step_id`) `Пройдено_шагов`,
+                        ROUND(COUNT(DISTINCT `step_id`)/MAX(COUNT(DISTINCT `step_id`)) 
+                        OVER (PARTITION BY `module_id`) * 100, 1) AS `Относительный_рейтинг`
+                FROM `lesson`
+                JOIN `step` USING(lesson_id)
+                JOIN `step_student` USING(step_id)
+                JOIN `student` USING(student_id)
+                WHERE `result` = \'correct\'
+                GROUP BY `module_id`, `student_name`
+                ORDER BY `module_id`, Относительный_рейтинг DESC, Студент',
+
+        '10' => 'WITH `max_time`
+                AS (
+                    SELECT `student_name`, CONCAT(`module_id`, '.', `lesson_position`) AS `Урок`, MAX(`submission_time`) AS `mt`
+                    FROM `step_student` 
+                    JOIN `step` USING(`step_id`) 
+                    JOIN `lesson` USING(`lesson_id`) 
+                    JOIN `student` USING(`student_id`)
+                    WHERE result = \'correct\'
+                    GROUP BY `student_name`, `lesson_id`
+                ),
+                `requirements` 
+                AS (
+                    SELECT `student_name`
+                    FROM `max_time`
+                    GROUP BY `student_name`
+                    HAVING COUNT(*) >= 3 
+                )
+  
+                SELECT `student_name` AS `Студент`, `Урок`, FROM_UNIXTIME(`mt`) AS `Макс_время_отправки`, 
+                IFNULL(CEIL((`mt` - LAG(`mt`) OVER(PARTITION BY `student_name` ORDER BY `mt`)) / 86400), '-') AS `Интервал`
+                FROM `max_time` JOIN `requirements` USING(`student_name`)
+                ORDER BY `Студент`, `Макс_время_отправки`',
+
+        '11' => 'WITH `res_tab` 
+                AS (
+                    SELECT `student_name` AS `Студент`,
+                        CONCAT(`module_id`, \'.\', `lesson_position`, \'.\', `step_position`) AS `Шаг`,
+                        ROW_NUMBER() OVER(PARTITION BY `step_id` ORDER BY `submission_time`) AS `Номер_попытки`,
+                        `result` AS `Результат`,
+                            CASE WHEN `submission_time` - `attempt_time` > 3600
+                                 THEN (SELECT AVG(`submission_time` - `attempt_time`)
+                                        FROM `step_student` JOIN `student`
+                                        ON `step_student`.`student_id` = `student`.`student_id` 
+                                        AND `student_name` = \'student_59\'
+                                        WHERE `submission_time` - `attempt_time` <= 3600)
+                                ELSE `submission_time` - `attempt_time`
+                            END AS `timestamp_attempt`,
+                            `step_id`,
+                            `submission_time`
+                    FROM `step_student` 
+                    JOIN `student` ON `step_student`.`student_id` = `student`.`student_id` 
+                    AND `student_name` = \'student_59\' 
+                    JOIN `step` USING(`step_id`) 
+                    JOIN `lesson` USING(`lesson_id`)
+                )
+                
+                SELECT `Студент`, `Шаг`, `Номер_попытки`, `Результат`,
+                    SEC_TO_TIME(ROUND(`timestamp_attempt`)) AS `Время_попытки`,
+                    ROUND(`timestamp_attempt` / (SUM(`timestamp_attempt`) OVER(PARTITION BY `Шаг`))*100,2) AS `Относительное_время`
+                FROM `res_tab`
+                ORDER BY `step_id`, `submission_time`',
+
+        '12' => 'WITH `first_group` 
+                AS (
+                    SELECT `student_name` AS `Студент`, `step_id` , `result`, `submission_time`,
+                        LEAD(`result`) OVER(PARTITION BY `student_id`, `step_id` ORDER BY `submission_time`) AS `next_result`
+                    FROM `student` 
+                    JOIN `step_student` USING(`student_id`)
+                ),
+                `second_group `
+                AS (
+                    SELECT `student_name`  AS `Студент`, `step_id`
+                    FROM `student` 
+                    JOIN `step_student` USING(`student_id`)
+                    WHERE `result` = \'correct\'
+                    GROUP BY `student_name`, `step_id`
+                    HAVING COUNT(`result`) > 1
+                ),
+                `third_group`
+                AS (
+                    SELECT `student_name` AS `Студент`, `step_id`
+                    FROM `student` 
+                    JOIN `step_student` USING(`student_id`)
+                    GROUP BY `student_id`, `step_id`
+                    HAVING SUM( IF(`result` = \'correct\', 1, 0) ) = 0
+                )
+                        
+                SELECT \'I\' AS `Группа` , `Студент`, COUNT(DISTINCT `step_id`) AS `Количество_шагов`
+                FROM `first_group`
+                WHERE `result` = \'correct\' AND `next_result` = \'wrong\'
+                GROUP BY `Студент`
+                
+                UNION ALL
+                SELECT  \'II\' AS `Группа`, `Студент`, COUNT(DISTINCT `step_id`) AS `Количество_шагов`
+                FROM `second_group`
+                GROUP BY `Студент`
+                
+                UNION ALL
+                SELECT  \'III\' AS `Группа`, `Студент`, COUNT(DISTINCT `step_id`) AS `Количество_шагов`
+                FROM `third_group`
+                GROUP BY `Студент`
+                
+                ORDER BY `Группа`, `Количество_шагов` DESC, `Студент`'
+    ];
+
+    /** Решения задач из урока 4.1 */
+
+    $sql['4.1'] = [
+        '1' => 'SELECT `beg_range`, `end_range`, ROUND(SUM(`price`)/COUNT(`amount`), 2) `Средняя_цена`, 
+                        SUM(`price` * `amount`) `Стоимость`,
+                        COUNT(`amount`) `Количество`
+                FROM `book`
+                JOIN `stat` ON `book`.`price` BETWEEN `stat`.`beg_range` AND `stat`.`end_range`
+                GROUP BY `beg_range`, `end_range`
+                ORDER BY `beg_range`',
+
+        '2' => 'SELECT * FROM `book` ORDER BY LENGTH(`title`)',
+
+        '3' => 'DELETE FROM `book` WHERE `price` LIKE \'%.99\';
+                DELETE FROM `supply` WHERE `price` LIKE \'%.99\';',
+
+        '4' => 'SELECT `author`, `title`, `price`, `amount`, 
+                        IF(price > 600, ROUND(`price` * 0.2 , 2), '-') `sale_20`, 
+                        IF(price > 600, `price` - ROUND(`price` * 0.2 , 2), '-') `price_sale`
+                FROM `book`
+                ORDER BY `author`, `title`',
+
+        '5' => 'WITH `authors` (`author`, `price`)
+                    AS (
+                        SELECT `author`, `price`
+                        FROM `book`
+                        WHERE `price` > (SELECT ROUND(AVG(`price`), 2) FROM `book`)
+                    ),
+                    `summs` (`author`, `Стоимость`)
+                    AS (
+                        SELECT `author`, SUM(`price` * `amount`) `Стоимость` FROM `book`
+                        GROUP BY `author`
+                    )
+                
+                SELECT `author`, `Стоимость`
+                FROM `summs`
+                JOIN `authors` USING(`author`)
+                ORDER BY `Стоимость` DESC',
+
+        '6' => '',
+        '7' => '',
     ];
 
     return $sql;
