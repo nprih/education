@@ -1175,8 +1175,38 @@ function getSql(): array
                 JOIN `authors` USING(`author`)
                 ORDER BY `Стоимость` DESC',
 
+        '6' => 'SELECT `author` `Автор`, 
+                        `title` `Название_книги`, 
+                        `amount` `Количество`, 
+                        `price` `Розничная_цена`, 
+                        IF(`amount` >= 10, 15, 0) `Скидка`, 
+                        IF(`amount` >= 10, ROUND(`price` * 0.85, 2), `price`) `Оптовая_цена`
+                FROM `book`
+                ORDER BY `Автор`, `Название_книги`',
+
+        '7' => 'SELECT `author`, `Количество_произведений`, `Минимальная_цена`, `Число_книг`
+                FROM 
+                (
+                    SELECT `author`, COUNT(*) `Количество_произведений`, MIN(`price`) `Минимальная_цена`, SUM(`amount`) `Число_книг`
+                    FROM `book` GROUP BY `author`
+                    HAVING COUNT(*) >= 2
+                ) `authors`
+                JOIN `book` USING(`author`)
+                WHERE `price` > 500 AND `amount` > 1
+                GROUP BY `author`',
+    ];
+
+    /** Решения задач из урока 4.2 */
+
+    $sql['4.2'] = [
+        '1' => '',
+        '2' => '',
+        '3' => '',
+        '4' => '',
+        '5' => '',
         '6' => '',
         '7' => '',
+        '8' => '',
     ];
 
     return $sql;
