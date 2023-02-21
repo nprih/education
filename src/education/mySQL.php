@@ -1199,6 +1199,106 @@ function getSql(): array
     /** Решения задач из урока 4.2 */
 
     $sql['4.2'] = [
+        '1' => 'SELECT \'Донцова Дарья\' AS `author`, 
+                        CONCAT(\'Евлампия Романова и \', `title`) AS `title`, 
+                        ROUND(`price` * 1.42, 2) AS `price`
+                FROM `book`
+                ORDER BY `price` DESC',
+
+        '2' => 'SELECT `name_genre`, SUM(`buy_book`.`amount`) Количество
+                FROM `genre`
+                JOIN `book` USING(`genre_id`)
+                JOIN `buy_book` USING(`book_id`)
+                GROUP BY `name_genre`
+                HAVING `Количество` > 0
+                AND `Количество` = (
+                    SELECT MIN(`Количество`) 
+                    FROM (
+                        SELECT `name_genre`, SUM(`buy_book`.`amount`) `Количество`
+                        FROM `genre`
+                        JOIN `book` USING(`genre_id`)
+                        JOIN `buy_book` USING(`book_id`)
+                        GROUP BY `name_genre`
+                        HAVING `Количество` > 0
+                    ) `all_buy`
+                )',
+
+        '3' => 'SET @avg = 
+                (
+                    SELECT ROUND(AVG(`amount`), 2)
+                    FROM (
+                        SELECT `title`, `author`, `price`, `amount` FROM `book`
+                        UNION ALL
+                        SELECT `title`, `author`, `price`, `amount` FROM `supply`
+                    ) `union_table`
+                );
+                
+                CREATE TABLE `store`
+                AS 
+                    WITH `union_table` (`title`, `author`, `price`, `amount`)
+                    AS (
+                        SELECT `title`, `author`, `price`, `amount` FROM `book`
+                        UNION ALL
+                        SELECT `title`, `author`, `price`, `amount` FROM `supply`
+                    )
+                
+                    SELECT `title`, `author`, MAX(`price`) AS `price`, SUM(`amount`) AS `amount` 
+                    FROM `union_table`
+                    GROUP BY `author`, `title`
+                    HAVING SUM(`amount`) > @avg
+                    ORDER BY `author`, `price` DESC',
+
+        '4' => 'SELECT `author`, 
+                        `title`, 
+                        CASE
+                            WHEN `price` < 500 THEN \'низкая\'
+                            WHEN (`price` BETWEEN 500 AND 700 ) THEN \'средняя\'
+                            WHEN `price` > 700 THEN \'высокая\'
+                        END `price_category`, 
+                        `price` * `amount` `cost` 
+                FROM `book`
+                WHERE `title` <> \'Белая гвардия\' AND `author` <> \'Есенин С.А.\'
+                ORDER BY `cost` DESC, `title`',
+
+        '5' => 'SET @max_cost = (SELECT MAX(`amount` * `price`) FROM `book`);
+
+                SELECT `title`, `author`, `amount`, ROUND((@max_cost - `amount` * `price`), 2) `Разница_с_макс_стоимостью`
+                FROM `book`
+                WHERE `amount`%2 <> 0
+                ORDER BY `Разница_с_макс_стоимостью` DESC',
+
+        '6' => 'SELECT `title` `Наименование`, 
+                        `price` `Цена`, 
+                        IF (`amount` <= 5, 500, \'Бесплатно\') `Стоимость_доставки` 
+                FROM `book`
+                WHERE `price` > 600
+                ORDER BY `price` DESC',
+
+        '7' => 'SELECT `author`, 
+                        `title`, 
+                        `amount`, 
+                        `price`, 
+                        CASE
+                            WHEN `amount` >= 5 THEN \'50%\'
+                            WHEN `amount` < 5 THEN IF(`price` >= 700, \'20%\', \'10%\')
+                        END Скидка, 
+                        CASE
+                            WHEN `amount` >= 5 THEN ROUND(`price` * 0.5, 2)
+                            WHEN `amount` < 5 THEN IF(`price` >= 700, ROUND(`price` * 0.8, 2), ROUND(`price` * 0.9, 2))
+                        END `Цена_со_скидкой` 
+                FROM `book`',
+
+        '8' => 'SELECT `author`, `title`, `amount`, `price` AS `real_price`, 
+                        ROUND(IF(`price` * `amount` > 5000, `price` * 1.2, `price` * 0.8), 2) AS `new_price`,
+                        ROUND(IF(`price` <= 500, 99.99, IF(`amount` < 5, 149.99, 0.00)), 2) AS `delivery_price`
+                FROM `book`
+                WHERE `author` IN (\'Булгаков М.А.\', \'Есенин С.А.\') AND `amount` BETWEEN 3 AND 14
+                ORDER BY `author`, `title` DESC, `delivery_price`',
+    ];
+
+    /** Решения задач из урока 4.3 */
+
+    $sql['4.3'] = [
         '1' => '',
         '2' => '',
         '3' => '',
