@@ -1,4 +1,13 @@
 {
+  "name": "akchapocha/education",
+  "description": "autoloader Composer",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Akchapocha",
+      "email": "pulong@list.ru"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "": ""
