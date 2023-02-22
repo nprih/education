@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => '__root__',
+        'name' => 'akchapocha/education',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '9b69e4181d01913211e780fbc47ed6640822893c',
+        'reference' => '13354d00a76c73033da491ac8706d047db2faeda',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        '__root__' => array(
+        'akchapocha/education' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '9b69e4181d01913211e780fbc47ed6640822893c',
+            'reference' => '13354d00a76c73033da491ac8706d047db2faeda',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

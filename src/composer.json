@@ -8,6 +8,7 @@
       "email": "pulong@list.ru"
     }
   ],
+
   "autoload": {
     "psr-4": {
       "": ""
