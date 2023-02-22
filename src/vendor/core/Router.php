@@ -57,8 +57,6 @@ class Router
     {
         $url = rtrim($_SERVER['REQUEST_URI']);
 
-        self::autoload();
-
         if (self::matchRoute($url)){
 
             $controller = 'app\controllers\\' . self::upperCamelCase(self::$route['controller']);
@@ -102,18 +100,4 @@ class Router
         return lcfirst(self::upperCamelCase($name));
     }
 
-    private static function autoload(): void
-    {
-        spl_autoload_register(function (string $class){
-
-            $file = ROOT . '/' . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-
-            if (is_file($file)){
-
-                require_once $file;
-
-            }
-
-        });
-    }
 }
