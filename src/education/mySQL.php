@@ -1299,8 +1299,28 @@ function getSql(): array
     /** Решения задач из урока 4.3 */
 
     $sql['4.3'] = [
-        '1' => '',
-        '2' => '',
+        '1' => 'SELECT `author`, `title`, 
+                    TRUNCATE(`price`, 0) AS `Рубли`, 
+                    ROUND((`price` - TRUNCATE(`price`, 0)) * 100) AS `Копейки`
+                FROM `book`
+                ORDER BY  ROUND((`price` - TRUNCATE(`price`, 0)) * 100) DESC',
+
+        '2' => 'SELECT CONCAT(\'Графоман и \', `author`) `Автор`, 
+                        CONCAT(title, \'. Краткое содержание.\') `Название`, 
+                        IF(`price` * 0.4 > 250, 250, `price` * 0.4) `Цена`,
+                        CASE
+                            WHEN `amount` <= 3 THEN \'высокий\'
+                            WHEN `amount` > 4 AND `amount` <= 10 THEN \'средний\'
+                            ELSE \'низкий\'
+                        END `Спрос`, 
+                        CASE
+                            WHEN `amount` IN (1, 2) THEN \'очень мало\'
+                            WHEN `amount` BETWEEN 3 AND 14 THEN \'в наличии\'
+                            WHEN `amount` >=5 THEN \'много\'
+                        END `Наличие` 
+                FROM `book`
+                ORDER BY `Цена`, `amount`, `Название`',
+
         '3' => '',
         '4' => '',
         '5' => '',
