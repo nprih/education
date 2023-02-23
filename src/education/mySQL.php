@@ -1321,12 +1321,121 @@ function getSql(): array
                 FROM `book`
                 ORDER BY `Цена`, `amount`, `Название`',
 
-        '3' => '',
-        '4' => '',
-        '5' => '',
-        '6' => '',
-        '7' => '',
-        '8' => '',
+        '3' => 'SET @avg_price =  
+                      (
+                        SELECT ROUND(AVG(`pr`), 2) AS `price`
+                        FROM (
+                                SELECT SUM(`price` * `buy_book`.`amount`) AS `pr`
+                                  FROM `book`
+                                  JOIN `buy_book` USING(`book_id`)
+                                  JOIN `buy` USING(`buy_id`)
+                                  GROUP BY `buy`.`client_id`
+                              ) `innert`
+                       );
+                
+                SELECT `name_client`, 
+                        SUM(`price` * `buy_book`.`amount`) `Общая_сумма_заказов`,
+                        COUNT(DISTINCT `buy_book`.`buy_id`) `Заказов_всего`,
+                        SUM(`buy_book`.`amount`) `Книг_всего`
+                FROM `book`
+                JOIN `buy_book` USING(`book_id`)
+                JOIN `buy` USING(`buy_id`)
+                JOIN `client` USING(`client_id`)
+                GROUP BY `name_client`
+                HAVING SUM(`price` * `buy_book`.`amount`) > @avg_price',
+
+        '4' => 'SELECT `author`, 
+                        `title`, 
+                        `price`, 
+                        `amount`, 
+                        ROUND(((`amount` * `price`) / (
+                                            SELECT SUM(`amount` * `price`) FROM `book` `all_summ`
+                                            )) * 100, 2)
+                            `income_percent`
+                FROM `book`
+                ORDER BY `income_percent` DESC',
+
+        '5' => 'SELECT `name_author`, 
+                        `name_genre`, 
+                        COUNT(`amount`) `Количество`
+                FROM `author` 
+                CROSS JOIN `genre` 
+                LEFT JOIN `book`
+                USING(`author_id`, `genre_id`)
+                GROUP BY `author_id`, `genre_id`
+                ORDER BY `name_author`, `Количество` DESC, `name_genre`',
+
+        '6' => 'SELECT `author` `Автор`, 
+                        `title` `Название_книги`, 
+                        `price` `Цена`, 
+                        CASE
+                            WHEN `price` <= 600 THEN \'ручка\'
+                            WHEN `price` <= 700 AND `price` > 600 THEN \'детская раскраска\'
+                            ELSE \'гороскоп\'
+                        END `Подарок`
+                FROM `book`
+                WHERE `price` >= 500
+                ORDER BY `Автор`, `Название_книги`',
+
+        '7' => 'SELECT `author` `Автор`, 
+                        MIN(`amount`) `Наименьшее_кол_во`, 
+                        MAX(`amount`) `Наибольшее_кол_во` 
+                FROM `book`
+                GROUP BY `Автор`
+                HAVING SUM(`amount`) < 10',
+
+        '8' => 'SET @buy_id = (
+                                  SELECT MAX(`buy_id`)
+                                  FROM `buy_book` 
+                                  JOIN `buy` USING(`buy_id`) 
+                                  JOIN `client` USING(`client_id`)
+                                  WHERE `name_client` = \'Баранов Павел\'
+                             );
+                              
+                    INSERT INTO `buy_book`(`buy_id`, `book_id`, `amount`)
+                    SELECT @buy_id AS `buy_id`, `book_id`, 1 AS `amount`
+                    FROM `author` 
+                    JOIN `book` USING(`author_id`)
+                    WHERE `name_author` LIKE \'Достоевский%\'',
+    ];
+
+    /** Решения задач из урока 4.4 */
+
+    $sql['4.4'] = [
+        '1' => 'SET @hard = (SELECT SUM(`is_correct`) / COUNT(`is_correct`) * 100
+                           FROM `subject`
+                               JOIN `question` USING(`subject_id`)
+                               JOIN `testing` USING(`question_id`)
+                           LEFT JOIN `answer` USING(`answer_id`)
+                           GROUP BY `name_subject`, `name_question`
+                           ORDER BY 1
+                           LIMIT 1);
+                          
+                SET @easy = (SELECT SUM(`is_correct`) / COUNT(`is_correct`) * 100
+                           FROM `subject`
+                               JOIN `question` USING(`subject_id`)
+                               JOIN `testing` USING(`question_id`)
+                           LEFT JOIN `answer` USING(`answer_id`)
+                           GROUP BY `name_subject`, `name_question`
+                           ORDER BY 1 DESC
+                           LIMIT 1);
+                
+                SELECT `name_subject`, `name_question`,
+                    IF(SUM(`is_correct`) / COUNT(`is_correct`) * 100 = @easy, \'самый легкий\', \'самый сложный\') AS `Сложность`
+                FROM `subject`
+                    JOIN `question` USING(`subject_id`)
+                    JOIN `testing` USING(`question_id`)
+                    LEFT JOIN `answer` USING(`answer_id`)
+                GROUP BY `name_subject`, `name_question`
+                HAVING SUM(`is_correct`) / COUNT(`is_correct`) * 100 = @hard OR SUM(`is_correct`) / COUNT(`is_correct`) * 100 = @easy
+                ORDER BY SUM(`is_correct`) / COUNT(`is_correct`) * 100 DESC',
+
+        '2' => 'INSERT INTO `attempt` (`student_id`, `subject_id`, `date_attempt`, `result`)
+                SELECT `student_id`, `subject_id`, NOW(), NULL
+                FROM `attempt`
+                GROUP BY `student_id`, `subject_id`
+                HAVING COUNT(`subject_id`) < 3 AND MAX(`result`) < 70
+                ORDER BY `subject_id`'
     ];
 
     return $sql;
