@@ -8,4 +8,9 @@ class TestClass
     {
         return 'Тестовый класс: ' . __CLASS__;
     }
+
+    public function testMethod(): string
+    {
+        return 'Тестовый метод: ' . __METHOD__;
+    }
 }

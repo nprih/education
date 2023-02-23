@@ -11,6 +11,7 @@ class Book
 
         $test = new TestClass();
         debug($test->testFunction());
+        debug($test->testMethod());
 
         debug('</br></br>');
         debug('Класс: ' . __CLASS__ . '</br>Метод: ' . __FUNCTION__);
