@@ -6,6 +6,6 @@ class TestClass
 {
     public function testFunction(): string
     {
-        return 'Тестовый класс: ' . __CLASS__;
+        return 'Тестовый класс(класс для тестов): ' . __CLASS__;
     }
 }
