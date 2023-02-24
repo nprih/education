@@ -3,7 +3,7 @@
         'name' => 'akchapocha/education',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'f0a84288cc8d56882a805664c91b48070cb202ce',
+        'reference' => '4f885da71351fbfe09933af1048f7ed16473de13',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'akchapocha/education' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'f0a84288cc8d56882a805664c91b48070cb202ce',
+            'reference' => '4f885da71351fbfe09933af1048f7ed16473de13',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
