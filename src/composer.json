@@ -11,7 +11,12 @@
 
   "autoload": {
     "psr-4": {
-      "": ""
+      "": "",
+      "education\\classes\\test\\": ["education/classes/test/", "tests/"]
     }
+  },
+
+  "require-dev": {
+    "phpunit/phpunit": "10.*"
   }
 }

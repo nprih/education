@@ -10,11 +10,16 @@ class Validator
 
     public function validateUser(string $mail, string $pass): bool
     {
-        if (! is_array($user = $this->store->getUser($mail)))
+        $user = $this->store->getUser($mail);
+
+        if (is_null($user))
         {
             return false;
         }
-        if ($user['pass'] == $pass)
+
+        $testpass = $user->getPass();
+
+        if ($testpass == $pass)
         {
             return true;
         }

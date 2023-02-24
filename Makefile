@@ -43,7 +43,7 @@ app_bash:
 php:
 	${DOCKER_COMPOSE} exec -u www-data php-fpm bash
 test:
-	${DOCKER_COMPOSE} exec -u www-data php-fpm bin/phpunit
+	${DOCKER_COMPOSE} exec -u www-data php-fpm src/vendor/bin/phpunit src/tests/
 jwt:
 	${DOCKER_COMPOSE} exec -u www-data php-fpm bin/console lexik:jwt:generate-keypair
 cache:

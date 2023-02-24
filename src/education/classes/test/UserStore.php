@@ -12,17 +12,7 @@ class UserStore
         {
             throw new \Exception("Пользователь {$mail} уже есть в системе");
         }
-        if (strlen($pass) < 5)
-        {
-            throw new \Exception("Пароль должен быть не короче 5 символов");
-        }
-
-        $this->users[$mail] = [
-            'pass' => $pass,
-            "mail" => $mail,
-            'name' => $name
-        ];
-
+        $this->users[$mail] = new User($name, $mail, $pass);
         return true;
     }
 
@@ -30,12 +20,16 @@ class UserStore
     {
         if (isset($this->users[$mail]))
         {
-            $this->users[$mail]['failed'] = time();
+            $this->users[$mail]->failed(time());
         }
     }
 
-    public function getUser(string $mail): array
+    public function getUser(string $mail): ? User
     {
-        return $this->users[$mail];
+        if (isset($this->users[$mail]))
+        {
+            return $this->users[$mail];
+        }
+        return null;
     }
 }
