@@ -20,6 +20,6 @@ class Book
 
         debug('</br></br>');
         debug('Класс: ' . __CLASS__ . '</br>Метод: ' . __FUNCTION__);
-        debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 810',1);
+        debug(str_replace( $_SERVER['HOME'] . '/', '', __FILE__ ) . ' стр.: 868',1);
     }
 }
