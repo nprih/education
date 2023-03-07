@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- build xml -->
+
+<project name="userthing" default="test" basedir="/var/www/src">
+    <target name="test">
+        <phpunit bootstrap="/var/www/src/vendor/autoload.php"
+                 printsummary="true">
+            <formatter type="plain" usefile="false"/>
+            <batchtest>
+                <fileset dir="/var/www/src/tests">
+                    <include name="*Test.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+</project>
