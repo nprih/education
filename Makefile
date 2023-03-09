@@ -74,7 +74,7 @@ deptrac:
 	${DOCKER_COMPOSE_PHP_FPM_EXEC} vendor/bin/deptrac analyze deptrac-modules.yaml
 
 cs_fix:
-	${DOCKER_COMPOSE_PHP_FPM_EXEC} vendor/bin/php-cs-fixer fix
+	${DOCKER_COMPOSE_PHP_FPM_EXEC} ./src/vendor/bin/php-cs-fixer fix
 
 cs_fix_diff:
-	${DOCKER_COMPOSE_PHP_FPM_EXEC} vendor/bin/php-cs-fixer fix --dry-run --diff
+	${DOCKER_COMPOSE_PHP_FPM_EXEC} ./src/vendor/bin/php-cs-fixer fix --dry-run --diff
