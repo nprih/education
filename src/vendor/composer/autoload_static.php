@@ -7,7 +7,15 @@ namespace Composer\Autoload;
 class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
 {
     public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
+        'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
+        'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
     );
 
@@ -16,13 +24,45 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         array (
             'education\\classes\\test\\' => 23,
         ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Php81\\' => 23,
+            'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
+            'Symfony\\Polyfill\\Intl\\Grapheme\\' => 31,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Contracts\\Service\\' => 26,
+            'Symfony\\Contracts\\EventDispatcher\\' => 34,
+            'Symfony\\Component\\String\\' => 25,
+            'Symfony\\Component\\Stopwatch\\' => 28,
+            'Symfony\\Component\\Process\\' => 26,
+            'Symfony\\Component\\OptionsResolver\\' => 34,
+            'Symfony\\Component\\Finder\\' => 25,
+            'Symfony\\Component\\Filesystem\\' => 29,
+            'Symfony\\Component\\EventDispatcher\\' => 34,
+            'Symfony\\Component\\Console\\' => 26,
+        ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
+            'Psr\\EventDispatcher\\' => 20,
+            'Psr\\Container\\' => 14,
+            'Psr\\Cache\\' => 10,
             'PhpParser\\' => 10,
+            'PhpCsFixer\\' => 11,
         ),
         'D' => 
         array (
+            'Doctrine\\Common\\Lexer\\' => 22,
+            'Doctrine\\Common\\Annotations\\' => 28,
             'DeepCopy\\' => 9,
+        ),
+        'C' => 
+        array (
+            'Composer\\XdebugHandler\\' => 23,
+            'Composer\\Semver\\' => 16,
+            'Composer\\Pcre\\' => 14,
         ),
     );
 
@@ -32,13 +72,117 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
             0 => __DIR__ . '/../..' . '/education/classes/test',
             1 => __DIR__ . '/../..' . '/tests',
         ),
+        'Symfony\\Polyfill\\Php81\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php81',
+        ),
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
+        ),
+        'Symfony\\Polyfill\\Intl\\Grapheme\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Contracts\\Service\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/service-contracts',
+        ),
+        'Symfony\\Contracts\\EventDispatcher\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/event-dispatcher-contracts',
+        ),
+        'Symfony\\Component\\String\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/string',
+        ),
+        'Symfony\\Component\\Stopwatch\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/stopwatch',
+        ),
+        'Symfony\\Component\\Process\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/process',
+        ),
+        'Symfony\\Component\\OptionsResolver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/options-resolver',
+        ),
+        'Symfony\\Component\\Finder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/finder',
+        ),
+        'Symfony\\Component\\Filesystem\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/filesystem',
+        ),
+        'Symfony\\Component\\EventDispatcher\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
+        ),
+        'Symfony\\Component\\Console\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
+        ),
+        'Psr\\EventDispatcher\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/event-dispatcher/src',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
+        'PhpCsFixer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/friendsofphp/php-cs-fixer/src',
+        ),
+        'Doctrine\\Common\\Lexer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/lexer/src',
+        ),
+        'Doctrine\\Common\\Annotations\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations',
+        ),
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
+        'Composer\\XdebugHandler\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/xdebug-handler/src',
+        ),
+        'Composer\\Semver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/semver/src',
+        ),
+        'Composer\\Pcre\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/pcre/src',
         ),
     );
 
@@ -66,6 +210,7 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'Arg' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/SymfonyConsole/Arg.php',
         'AssignedVar' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/CapsuleTask.php',
         'AttribTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/AttribTask.php',
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'AutoloaderTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/AutoloaderTask.php',
         'AvailableTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/AvailableTask.php',
         'BaseExtendSelector' => __DIR__ . '/..' . '/phing/phing/classes/phing/types/selectors/BaseExtendSelector.php',
@@ -301,6 +446,7 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'NestedCondition' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/condition/NestedCondition.php',
         'NoBannerLogger' => __DIR__ . '/..' . '/phing/phing/classes/phing/listener/NoBannerLogger.php',
         'NoneSelector' => __DIR__ . '/..' . '/phing/phing/classes/phing/types/selectors/NoneSelector.php',
+        'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
         'NotCondition' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/condition/NotCondition.php',
         'NotSelector' => __DIR__ . '/..' . '/phing/phing/classes/phing/types/selectors/NotSelector.php',
         'NotifySendTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/NotifySendTask.php',
@@ -591,6 +737,8 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'PHPUnit\\Framework\\Constraint\\DirectoryExists' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Filesystem/DirectoryExists.php',
         'PHPUnit\\Framework\\Constraint\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Exception/Exception.php',
         'PHPUnit\\Framework\\Constraint\\ExceptionCode' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Exception/ExceptionCode.php',
+        'PHPUnit\\Framework\\Constraint\\ExceptionMessageIsOrContains' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Exception/ExceptionMessageIsOrContains.php',
+        'PHPUnit\\Framework\\Constraint\\ExceptionMessageMatchesRegularExpression' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Exception/ExceptionMessageMatchesRegularExpression.php',
         'PHPUnit\\Framework\\Constraint\\FileExists' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Filesystem/FileExists.php',
         'PHPUnit\\Framework\\Constraint\\GreaterThan' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Cardinality/GreaterThan.php',
         'PHPUnit\\Framework\\Constraint\\IsAnything' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/IsAnything.php',
@@ -613,14 +761,11 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'PHPUnit\\Framework\\Constraint\\IsType' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Type/IsType.php',
         'PHPUnit\\Framework\\Constraint\\IsWritable' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Filesystem/IsWritable.php',
         'PHPUnit\\Framework\\Constraint\\JsonMatches' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/JsonMatches.php',
-        'PHPUnit\\Framework\\Constraint\\JsonMatchesErrorMessageProvider' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/JsonMatchesErrorMessageProvider.php',
         'PHPUnit\\Framework\\Constraint\\LessThan' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Cardinality/LessThan.php',
         'PHPUnit\\Framework\\Constraint\\LogicalAnd' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Operator/LogicalAnd.php',
         'PHPUnit\\Framework\\Constraint\\LogicalNot' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Operator/LogicalNot.php',
         'PHPUnit\\Framework\\Constraint\\LogicalOr' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Operator/LogicalOr.php',
         'PHPUnit\\Framework\\Constraint\\LogicalXor' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Operator/LogicalXor.php',
-        'PHPUnit\\Framework\\Constraint\\MessageIsOrContains' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Message/MessageIsOrContains.php',
-        'PHPUnit\\Framework\\Constraint\\MessageMatchesRegularExpression' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Message/MessageMatchesRegularExpression.php',
         'PHPUnit\\Framework\\Constraint\\ObjectEquals' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/ObjectEquals.php',
         'PHPUnit\\Framework\\Constraint\\Operator' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Operator/Operator.php',
         'PHPUnit\\Framework\\Constraint\\RegularExpression' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/String/RegularExpression.php',
@@ -753,6 +898,7 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'PHPUnit\\Framework\\TestSuiteIterator' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/TestSuiteIterator.php',
         'PHPUnit\\Framework\\UnknownClassException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/UnknownClassException.php',
         'PHPUnit\\Framework\\UnknownClassOrInterfaceException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/UnknownClassOrInterfaceException.php',
+        'PHPUnit\\Framework\\UnknownTypeException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/UnknownTypeException.php',
         'PHPUnit\\Logging\\EventLogger' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/EventLogger.php',
         'PHPUnit\\Logging\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/Exception.php',
         'PHPUnit\\Logging\\JUnit\\JunitXmlLogger' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/JUnit/JunitXmlLogger.php',
@@ -781,26 +927,26 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'PHPUnit\\Logging\\TestDox\\HtmlRenderer' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/HtmlRenderer.php',
         'PHPUnit\\Logging\\TestDox\\NamePrettifier' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/NamePrettifier.php',
         'PHPUnit\\Logging\\TestDox\\PlainTextRenderer' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/PlainTextRenderer.php',
-        'PHPUnit\\Logging\\TestDox\\Subscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/Subscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestConsideredRiskySubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestConsideredRiskySubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestCreatedMockObjectForAbstractClassSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestCreatedMockObjectForAbstractClassSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestCreatedMockObjectForTraitSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestCreatedMockObjectForTraitSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestCreatedMockObjectFromWsdlSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestCreatedMockObjectFromWsdlSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestCreatedMockObjectSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestCreatedMockObjectSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestCreatedPartialMockObjectSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestCreatedPartialMockObjectSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestCreatedTestProxySubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestCreatedTestProxySubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestCreatedTestStubSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestCreatedTestStubSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestErroredSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestErroredSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestFailedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestFailedSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestFinishedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestFinishedSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestMarkedIncompleteSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestMarkedIncompleteSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestPassedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestPassedSubscriber.php',
-        'PHPUnit\\Logging\\TestDox\\TestPreparedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestPreparedSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\Subscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/Subscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestConsideredRiskySubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestConsideredRiskySubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestCreatedMockObjectForAbstractClassSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestCreatedMockObjectForAbstractClassSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestCreatedMockObjectForTraitSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestCreatedMockObjectForTraitSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestCreatedMockObjectFromWsdlSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestCreatedMockObjectFromWsdlSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestCreatedMockObjectSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestCreatedMockObjectSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestCreatedPartialMockObjectSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestCreatedPartialMockObjectSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestCreatedTestProxySubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestCreatedTestProxySubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestCreatedTestStubSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestCreatedTestStubSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestErroredSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestErroredSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestFailedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestFailedSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestFinishedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestFinishedSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestMarkedIncompleteSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestMarkedIncompleteSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestPassedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestPassedSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestPreparedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestPreparedSubscriber.php',
         'PHPUnit\\Logging\\TestDox\\TestResult' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/TestResult.php',
         'PHPUnit\\Logging\\TestDox\\TestResultCollection' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/TestResultCollection.php',
         'PHPUnit\\Logging\\TestDox\\TestResultCollectionIterator' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/TestResultCollectionIterator.php',
         'PHPUnit\\Logging\\TestDox\\TestResultCollector' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/TestResultCollector.php',
-        'PHPUnit\\Logging\\TestDox\\TestSkippedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/Subscriber/TestSkippedSubscriber.php',
+        'PHPUnit\\Logging\\TestDox\\TestSkippedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Logging/TestDox/TestMethod/Subscriber/TestSkippedSubscriber.php',
         'PHPUnit\\Metadata\\After' => __DIR__ . '/..' . '/phpunit/phpunit/src/Metadata/After.php',
         'PHPUnit\\Metadata\\AfterClass' => __DIR__ . '/..' . '/phpunit/phpunit/src/Metadata/AfterClass.php',
         'PHPUnit\\Metadata\\Annotation\\Parser\\DocBlock' => __DIR__ . '/..' . '/phpunit/phpunit/src/Metadata/Parser/Annotation/DocBlock.php',
@@ -1268,6 +1414,7 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'PhpDocumentorTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/phpdoc/PhpDocumentorTask.php',
         'PhpEvalTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/PhpEvalTask.php',
         'PhpLintTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/PhpLintTask.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'PlainPDOResultFormatter' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/pdo/PlainPDOResultFormatter.php',
         'PlainPHPUnitResultFormatter' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/phpunit/formatter/PlainPHPUnitResultFormatter.php',
         'PrefixLines' => __DIR__ . '/..' . '/phing/phing/classes/phing/filters/PrefixLines.php',
@@ -1303,6 +1450,7 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'ReplaceTokensWithFile' => __DIR__ . '/..' . '/phing/phing/classes/phing/filters/ReplaceTokensWithFile.php',
         'ResolvePathTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/ResolvePathTask.php',
         'Retry' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/Retry.php',
+        'ReturnTypeWillChange' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
         'RootHandler' => __DIR__ . '/..' . '/phing/phing/classes/phing/parser/RootHandler.php',
         'RuntimeConfigurable' => __DIR__ . '/..' . '/phing/phing/classes/phing/RuntimeConfigurable.php',
         'S3GetTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/Service/Amazon/S3/S3GetTask.php',
@@ -1545,6 +1693,7 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'StreamRequiredBuildLogger' => __DIR__ . '/..' . '/phing/phing/classes/phing/listener/StreamRequiredBuildLogger.php',
         'StringHelper' => __DIR__ . '/..' . '/phing/phing/classes/phing/util/StringHelper.php',
         'StringReader' => __DIR__ . '/..' . '/phing/phing/classes/phing/system/io/StringReader.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'StripLineBreaks' => __DIR__ . '/..' . '/phing/phing/classes/phing/filters/StripLineBreaks.php',
         'StripLineComments' => __DIR__ . '/..' . '/phing/phing/classes/phing/filters/StripLineComments.php',
         'StripPhpComments' => __DIR__ . '/..' . '/phing/phing/classes/phing/filters/StripPhpComments.php',
@@ -1602,11 +1751,13 @@ class ComposerStaticInit63afa90a9bb1cf9b7782b466f3c738de
         'TstampTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/TstampTask.php',
         'TypeSelector' => __DIR__ . '/..' . '/phing/phing/classes/phing/types/selectors/TypeSelector.php',
         'TypedefTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/TypedefTask.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'UnixFileSystem' => __DIR__ . '/..' . '/phing/phing/classes/phing/system/io/UnixFileSystem.php',
         'UnknownElement' => __DIR__ . '/..' . '/phing/phing/classes/phing/UnknownElement.php',
         'UntarTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/UntarTask.php',
         'UnzipTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/UnzipTask.php',
         'UpToDateTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/UpToDateTask.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
         'VersionCompareCondition' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/condition/VersionCompareCondition.php',
         'VersionTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/VersionTask.php',
         'WaitForTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/WaitForTask.php',
