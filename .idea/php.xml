@@ -12,6 +12,7 @@
   <component name="PhpCSFixer">
     <phpcsfixer_settings>
       <PhpCSFixerConfiguration tool_path="$PROJECT_DIR$/src/vendor/bin/php-cs-fixer" />
+      <phpcs_fixer_by_interpreter interpreter_id="29e5c2e9-8130-4eb8-897b-86915131918b" tool_path="src/vendor/bin/php-cs-fixer" timeout="30000" />
     </phpcsfixer_settings>
   </component>
   <component name="PhpIncludePathManager">
@@ -69,6 +70,62 @@
       <path value="$PROJECT_DIR$/src/vendor/symfony/filesystem" />
       <path value="$PROJECT_DIR$/src/vendor/friendsofphp/php-cs-fixer" />
     </include_path>
+  </component>
+  <component name="PhpInterpreters">
+    <interpreters>
+      <interpreter id="09570bc4-eb78-499f-a194-8ddb8c6061f9" name="education-php-fpm:latest" home="docker://DATA" debugger_id="php.debugger.XDebug">
+        <remote_data INTERPRETER_PATH="php" HELPERS_PATH="/opt/.phpstorm_helpers" INITIALIZED="false" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" DOCKER_ACCOUNT_NAME="Docker" DOCKER_IMAGE_NAME="education-php-fpm:latest" DOCKER_REMOTE_PROJECT_PATH="/opt/project" />
+      </interpreter>
+    </interpreters>
+  </component>
+  <component name="PhpInterpretersPhpInfoCache">
+    <phpInfoCache>
+      <interpreter name="education-php-fpm:latest">
+        <phpinfo binary_type="PHP" php_cli="/usr/local/bin/php" path_separator=":" version="8.1.0">
+          <additional_php_ini>/usr/local/etc/php/conf.d/docker-php-ext-sodium.ini</additional_php_ini>
+          <configuration_file />
+          <configuration_options>
+            <configuration_option name="include_path" value=".:/usr/local/lib/php" />
+          </configuration_options>
+          <debuggers />
+          <loaded_extensions>
+            <extension name="Core" />
+            <extension name="PDO" />
+            <extension name="Phar" />
+            <extension name="Reflection" />
+            <extension name="SPL" />
+            <extension name="SimpleXML" />
+            <extension name="ctype" />
+            <extension name="curl" />
+            <extension name="date" />
+            <extension name="dom" />
+            <extension name="fileinfo" />
+            <extension name="filter" />
+            <extension name="ftp" />
+            <extension name="hash" />
+            <extension name="iconv" />
+            <extension name="json" />
+            <extension name="libxml" />
+            <extension name="mbstring" />
+            <extension name="mysqlnd" />
+            <extension name="openssl" />
+            <extension name="pcre" />
+            <extension name="pdo_sqlite" />
+            <extension name="posix" />
+            <extension name="readline" />
+            <extension name="session" />
+            <extension name="sodium" />
+            <extension name="sqlite3" />
+            <extension name="standard" />
+            <extension name="tokenizer" />
+            <extension name="xml" />
+            <extension name="xmlreader" />
+            <extension name="xmlwriter" />
+            <extension name="zlib" />
+          </loaded_extensions>
+        </phpinfo>
+      </interpreter>
+    </phpInfoCache>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />

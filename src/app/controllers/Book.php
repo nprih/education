@@ -9,7 +9,7 @@ class Book
     {
         debug('</br></br>');
         debug('Класс: ' . __CLASS__ . '</br>Метод: ' . __FUNCTION__);
-        debug(str_replace($_SERVER['HOME'] . '/', '', __FILE__) . ' стр.: 146, Slim, PHPUnit, Twig');
+        debug(str_replace($_SERVER['HOME'] . '/', '', __FILE__) . ' стр.: 168, Slim, PHPUnit, Twig');
 
         echo '<style>body{font-size: 16px;}</style>
                 src:<br>
