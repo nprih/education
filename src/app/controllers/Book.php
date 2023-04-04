@@ -9,7 +9,7 @@ class Book
     {
         debug('</br></br>');
         debug('Класс: ' . __CLASS__ . '</br>Метод: ' . __FUNCTION__);
-        debug(str_replace($_SERVER['HOME'] . '/', '', __FILE__) . ' стр.: 79, Slim, PHPUnit, Twig');
+        debug(str_replace($_SERVER['HOME'] . '/', '', __FILE__) . ' стр.: 84, Slim, PHPUnit, Twig');
 
         echo
 <<<'EOF'
