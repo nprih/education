@@ -7,9 +7,10 @@ class Book
 {
     public function indexAction(): void
     {
+        $obj = new \stdClass();
         debug('</br></br>');
         debug('Класс: ' . __CLASS__ . '</br>Метод: ' . __FUNCTION__);
-        debug(str_replace($_SERVER['HOME'] . '/', '', __FILE__) . ' стр.: 143, Slim, PHPUnit, Twig');
+        debug(str_replace($_SERVER['HOME'] . '/', '', __FILE__) . ' стр.: 190, Slim, PHPUnit, Twig');
 
         echo
 <<<'EOF'
