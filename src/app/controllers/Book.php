@@ -7,6 +7,15 @@ class Book
 {
     public function indexAction(): void
     {
+        $url = parse_url('http://yandex.ru?key=value&key2=value2');
+        debug($url);
+        $queryParams = [];
+
+        if (isset($url['query'])) {
+            parse_str($url['query'], $queryParams);
+        }
+
+        debug($queryParams);
         debug('</br></br>');
         debug('Класс: ' . __CLASS__ . '</br>Метод: ' . __FUNCTION__);
         debug(str_replace($_SERVER['HOME'] . '/', '', __FILE__) . ' стр.: 247, Slim, PHPUnit, Twig');
