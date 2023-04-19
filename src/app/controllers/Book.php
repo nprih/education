@@ -14,6 +14,7 @@ class Book
         if (isset($url['query'])) {
             parse_str($url['query'], $queryParams);
         }
+        
 
         debug($queryParams);
         debug('</br></br>');
